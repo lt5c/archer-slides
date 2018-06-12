@@ -38,6 +38,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "es6-promise": "^4.2.4",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.1",
     "pure-render-deepcompare-decorator": "^1.0.3",
     "react": "^15.6.2",

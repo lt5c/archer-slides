@@ -15,12 +15,14 @@ class Wrapper extends Component {
 
     renderSlides() {
       let slides = this.props.slides || {};
+      let jsonOP = this.props.jsonOP;
 
       return Object.keys(slides).map(id=>{
         let item = slides[id];
+        let path = [id];
         switch (item.type) {
           case 'at':
-            return <ArcherTextarea data={item} key={id}/>
+            return <ArcherTextarea data={item} path={path} key={id} jsonOP={jsonOP}/>
           default:
             return null
         }

@@ -3,6 +3,7 @@
  * @type {[type]}
  */
 
-import json0 from './json';
+import json0 from './json0';
 
-export default OT = json0;
+const OT = json0;
+export default OT;

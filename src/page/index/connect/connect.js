@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { request } from 'page/common/actions/actions';
 import {
-    getAction
+    getAction,
+    jsonOP
 } from '../actions/actions';
 
 // Map Redux state to component props
@@ -17,7 +18,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         request: (cgiName, params, opts) => dispatch(request(cgiName, params, opts)),
-        getAction: (value) => dispatch(getAction(value))
+        getAction: (value) => dispatch(getAction(value)),
+        jsonOP: (op, source, render) => dispatch(jsonOP(op, source, render)),
     };
 }
 

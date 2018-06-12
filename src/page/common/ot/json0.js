@@ -661,4 +661,4 @@ json.transformComponent = function(dest, c, otherC, type) {
 // json.registerSubtype(text);
 // module.exports = json;
 
-export default json0 = json;
+export default json;
