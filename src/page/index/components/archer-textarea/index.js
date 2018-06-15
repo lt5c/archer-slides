@@ -26,14 +26,14 @@ class ArcherTextarea extends Component {
     textOP() {
       //文字变更,组装op
       let text = this.refs.editor.innerText;
-      let {data, path, jsonOP} = this.props;
+      let {data, path, commitOP} = this.props;
       let op = [{
         p: path.concat('text'),
         od: data.text,
         oi: clonedeep(text)
       }];
       console.debug(op);
-      jsonOP(op, 'at', false);
+      commitOP(op, 'at', false);
     }
 
     onDbClick() {
@@ -51,6 +51,7 @@ class ArcherTextarea extends Component {
 
     render() {
       let {editable} = this.state;
+      let {data} = this.props;
 
       let rndConfig = {
         bound: 'parent',
