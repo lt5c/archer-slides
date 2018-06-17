@@ -5,14 +5,18 @@ const initialState = {
     },
 
     slides: {
-      at0x86: {
-        type: 'at',
-        x:50,
-        y:50,
-        width:50,
-        height:50,
-        text: 'hello',
-      }
+      // at0x86: {
+      //   type: 'at',
+      //   position: {
+      //     x:50,
+      //     y:50
+      //   },
+      //   size: {
+      //     width:50,
+      //     height:50
+      //   },
+      //   text: 'hello222',
+      // }
     }
 };
 

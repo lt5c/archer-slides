@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Connect from '../connect/connect';
 import sharejs from 'page/common/sharejs';
+import clonedeep from 'lodash.clonedeep';
 
 import ArcherTextarea from '../components/archer-textarea';
 
@@ -22,13 +23,22 @@ class Wrapper extends Component {
     //监听server op
     listenServerOP() {
       let {jsonOP} = this.props;
-      let doc = sharejs.connect();
-      doc.on('before op', (op, source) => {
-        // if(!source) { //source from server
-          jsonOP(op, 'server', true);
-        // }
+      let doc = sharejs.connect(_=>{
+          doc.subscribe(this.applyKeyframe(doc.data));
+          doc.on('before op', (op, source) => {
+            // if(!source) { //source from server
+              jsonOP(op, 'server', true);
+            // }
+          });
       });
       this.doc = doc;
+      window.doc = doc;
+    }
+
+    applyKeyframe(k) {
+      let {onKeyframe} = this.props;
+      let keyframe = clonedeep(k);
+      onKeyframe(k);
     }
 
     commitOP(op) {
@@ -40,7 +50,7 @@ class Wrapper extends Component {
 
     renderSlides() {
       let slides = this.props.slides || {};
-      let commitOP = this.props.commitOP;
+      let commitOP = this.commitOP;
 
       return Object.keys(slides).map(id=>{
         let item = slides[id];

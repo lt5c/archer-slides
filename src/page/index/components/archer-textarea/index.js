@@ -15,6 +15,7 @@ class ArcherTextarea extends Component {
 
         this.onDbClick = this.onDbClick.bind(this);
         this.onBlur = this.onBlur.bind(this);
+        this.positionOP = this.positionOP.bind(this);
     }
 
     componentDidMount() {
@@ -32,8 +33,22 @@ class ArcherTextarea extends Component {
         od: data.text,
         oi: clonedeep(text)
       }];
-      console.debug(op);
+      console.debug('at','op','text',op);
       commitOP(op, 'at', false);
+    }
+
+    positionOP(e, draggableData) {
+      //位置变动,组装op
+      let {data, path, commitOP} = this.props;
+      if (draggableData.x !== data.x || draggableData.y !== data.y) {
+        let op = [{
+          p: path.concat('position'),
+          od: data.position,
+          oi: {x: draggableData.x, y: draggableData.y}
+        }];
+        console.debug('at','op','position',op);
+        commitOP(op, 'at', false);
+      }
     }
 
     onDbClick() {
@@ -53,6 +68,7 @@ class ArcherTextarea extends Component {
       let {editable} = this.state;
       let {data} = this.props;
 
+      //生成拖拽框的配置
       let rndConfig = {
         bound: 'parent',
         disableDragging: editable,
@@ -68,14 +84,28 @@ class ArcherTextarea extends Component {
         }
       }
 
+      //生成拖拽框的style
+      let rngStyle = {
+        position: data.position,
+        size: data.size
+      }
+
+      let rngHandler = {
+        onDragStop: this.positionOP,
+      }
+
+      let text = data.text;
+
       return (
-          <Rnd {...rndConfig}>
+          <Rnd {...rndConfig} {...rngStyle} {...rngHandler}>
             <div
               ref='editor'
               className='textarea-editor'
               onDoubleClick={this.onDbClick}
               onBlur={this.onBlur}
-              contentEditable={editable}/>
+              contentEditable={editable}>
+              {text}
+            </div>
           </Rnd>
       );
     }
