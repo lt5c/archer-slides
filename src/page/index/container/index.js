@@ -3,7 +3,7 @@ import Connect from '../connect/connect';
 import sharejs from 'page/common/sharejs';
 import clonedeep from 'lodash.clonedeep';
 
-import ArcherTextarea from '../components/archer-textarea';
+import ArcherText from '../components/archer-text';
 
 import './index.less';
 
@@ -57,7 +57,7 @@ class Wrapper extends Component {
         let path = [id];
         switch (item.type) {
           case 'at':
-            return <ArcherTextarea data={item} path={path} key={id} commitOP={commitOP}/>
+            return <ArcherText data={item} path={path} key={id} commitOP={commitOP}/>
           default:
             return null
         }
