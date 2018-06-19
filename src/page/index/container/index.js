@@ -3,7 +3,8 @@ import Connect from '../connect/connect';
 import sharejs from 'page/common/sharejs';
 import clonedeep from 'lodash.clonedeep';
 
-import ArcherText from '../components/archer-text';
+import ArcherText from '../slide-components/archer-text';
+import ArcherImage from '../slide-components/archer-image';
 
 import './index.less';
 
@@ -58,6 +59,8 @@ class Wrapper extends Component {
         switch (item.type) {
           case 'at':
             return <ArcherText data={item} path={path} key={id} commitOP={commitOP}/>
+          case 'ai':
+            return <ArcherImage data={item} path={path} key={id} commitOP={commitOP}/>
           default:
             return null
         }
