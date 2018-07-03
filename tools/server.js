@@ -5,6 +5,12 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const proxy = require('http-proxy-middleware');
+// 协作后台
+const http = require('http');
+const ShareDB = require('sharedb');
+const WebSocket = require('ws');
+const WebSocketJSONStream = require('websocket-json-stream');
+const initDoc = require('./initDoc');
 
 let webpackConfig = require('./webpack.base.js');
 let config = require('../config/project');
@@ -15,7 +21,7 @@ let apiPort = configWebpack['api-port'];
 let apiRoute = configWebpack['api-route'];
 
 function addProtocal(urlString) {
-    if (!!~urlString.indexOf('http:') || !!~urlString.indexOf('https:')) {
+    if (urlString.indexOf('http:') !== -1 || urlString.indexOf('https:') !== -1) {
         return urlString;
     }
 
@@ -56,11 +62,51 @@ apiRoute.forEach((rt) => {
     app.use(rt, proxy({ target: `http://127.0.0.1:${apiPort}` }));
 });
 
-app.listen(port, function(err) {
-    if (err) {
-        console.error(err);
-    }
-    else {
-        console.info('Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
-    }
-});
+// app.listen(port, function(err) {
+//     if (err) {
+//         console.error(err);
+//     }
+//     else {
+//         console.info('Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
+//     }
+// });
+
+// 协作后台
+let backend = new ShareDB();
+createDoc(startServer);
+
+// Create initial document then fire callback
+function createDoc(callback) {
+    let connection = backend.connect();
+    let doc = connection.get('archer', 'slides');
+    doc.fetch(function(err) {
+        if (err) throw err;
+        if (doc.type === null) {
+            console.log(initDoc);
+            doc.create(initDoc, callback);
+            return;
+        }
+        callback();
+    });
+}
+
+function startServer() {
+    // Create a web server to serve files and listen to WebSocket connections
+    let server = http.createServer(app);
+
+    // Connect any incoming WebSocket connection to ShareDB
+    let wss = new WebSocket.Server({ server: server });
+    wss.on('connection', function(ws, req) {
+        let stream = new WebSocketJSONStream(ws);
+        backend.listen(stream);
+    });
+
+    server.listen(port, function(err) {
+        if (err) {
+            console.error(err);
+        }
+        else {
+            console.info('Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
+        }
+    });
+}

@@ -8,81 +8,93 @@ import ArcherImage from '../slide-components/archer-image';
 
 import './index.less';
 
+window.share_doc = sharejs.connect(_ => {
+    // doc.subscribe(this.applyKeyframe(doc.data));
+    // doc.on('op', (op, source) => {
+    //     // if(!source) { //source from server
+    //     // jsonOP(op, 'server', true);
+    //     // }
+    //     this.applyKeyframe(doc.data);
+    // });
+});
+
+
 class Wrapper extends Component {
     constructor(props, context) {
-      super(props, context);
-      this.state = {};
+        super(props, context);
+        this.state = {};
 
-      this.renderSlides = this.renderSlides.bind(this);
-      this.commitOP = this.commitOP.bind(this);
+        this.renderSlides = this.renderSlides.bind(this);
+        this.commitOP = this.commitOP.bind(this);
+        this.doc = window.share_doc;
     }
 
     componentDidMount() {
-      this.listenServerOP();
+        this.listenServerOP();
     }
 
-    //监听server op
+    // 监听server op
     listenServerOP() {
-      let {jsonOP} = this.props;
-      let doc = sharejs.connect(_=>{
-          doc.subscribe(this.applyKeyframe(doc.data));
-          doc.on('before op', (op, source) => {
+        // let { jsonOP } = this.props;
+        // let doc = sharejs.connect(_ => {
+        const doc = window.share_doc;
+        doc.subscribe(this.applyKeyframe(doc.data));
+        doc.on('op', (op, source) => {
             // if(!source) { //source from server
-              jsonOP(op, 'server', true);
+            // jsonOP(op, 'server', true);
             // }
-          });
-      });
-      this.doc = doc;
-      window.doc = doc;
+            this.applyKeyframe(doc.data);
+        });
+        // });
+        // this.doc = doc;
+        // window.doc = doc;
     }
 
     applyKeyframe(k) {
-      let {onKeyframe} = this.props;
-      let keyframe = clonedeep(k);
-      onKeyframe(k);
+        let { onKeyframe } = this.props;
+        let keyframe = clonedeep(k);
+        onKeyframe(keyframe);
     }
 
     commitOP(op) {
-      let {jsonOP} = this.props;
-      let doc = this.doc;
-
-      doc.submitOp(op);
+        let doc = this.doc;
+        doc.submitOp(op);
     }
 
     renderSlides() {
-      let slides = this.props.slides || {};
-      let commitOP = this.commitOP;
+        let slides = this.props.slides || {};
+        let commitOP = this.commitOP;
 
-      return Object.keys(slides).map(id=>{
-        let item = slides[id];
-        let path = [id];
-        switch (item.type) {
-          case 'at':
-            return <ArcherText data={item} path={path} key={id} commitOP={commitOP}/>
-          case 'ai':
-            return <ArcherImage data={item} path={path} key={id} commitOP={commitOP}/>
-          default:
-            return null
-        }
-      });
+        return Object.keys(slides).map(id => {
+            let item = slides[id];
+            let path = [id];
+            switch (item.type) {
+                case 'at':
+                    return <ArcherText data={item} path={path} key={id} commitOP={commitOP} />;
+                case 'ai':
+                    return <ArcherImage data={item} path={path} key={id} commitOP={commitOP} />;
+                default:
+                    return null;
+            }
+        });
     }
 
     render() {
-      let mainStyle = {
-        height: (window.innerHeight - 50)+'px',
-      }
+        let mainStyle = {
+            height: (window.innerHeight - 50) + 'px',
+        };
 
-      return (
-        <div className="wrapper">
-          <div className="toolbar"></div>
-          <div className="main" style={mainStyle}>
-            <div className="sidebar"></div>
-            <div className="editor">
-              {this.renderSlides()}
+        return (
+            <div className="wrapper">
+                <div className="toolbar"></div>
+                <div className="main" style={mainStyle}>
+                    <div className="sidebar"></div>
+                    <div className="editor">
+                        {this.renderSlides()}
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      );
+        );
     }
 }
 
