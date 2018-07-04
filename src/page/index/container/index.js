@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import Connect from '../connect/connect';
-import sharejs from 'page/common/sharejs';
+import ShareDB from 'page/common/sharejs';
 import clonedeep from 'lodash.clonedeep';
 
-import ArcherText from '../slide-components/archer-text';
+import ArcherTextarea from '../slide-components/archer-textarea';
 import ArcherImage from '../slide-components/archer-image';
 
 import './index.less';
 
-window.share_doc = sharejs.connect(_ => {
-    // doc.subscribe(this.applyKeyframe(doc.data));
-    // doc.on('op', (op, source) => {
-    //     // if(!source) { //source from server
-    //     // jsonOP(op, 'server', true);
-    //     // }
-    //     this.applyKeyframe(doc.data);
-    // });
-});
+window.sharedb = ShareDB.connect();
 
 
 class Wrapper extends Component {
@@ -25,8 +17,8 @@ class Wrapper extends Component {
         this.state = {};
 
         this.renderSlides = this.renderSlides.bind(this);
-        this.commitOP = this.commitOP.bind(this);
-        this.doc = window.share_doc;
+        this.applyKeyframe = this.applyKeyframe.bind(this);
+        this.sharedb = window.sharedb;
     }
 
     componentDidMount() {
@@ -35,44 +27,32 @@ class Wrapper extends Component {
 
     // 监听server op
     listenServerOP() {
-        // let { jsonOP } = this.props;
-        // let doc = sharejs.connect(_ => {
-        const doc = window.share_doc;
-        doc.subscribe(this.applyKeyframe(doc.data));
-        doc.on('op', (op, source) => {
-            // if(!source) { //source from server
-            // jsonOP(op, 'server', true);
+        const sharedb = this.sharedb;
+        sharedb.subscribe(this.applyKeyframe);
+        sharedb.on('op', (op, source) => {
+            // if (!source) {
+            this.applyKeyframe(sharedb.data);
             // }
-            this.applyKeyframe(doc.data);
         });
-        // });
-        // this.doc = doc;
-        // window.doc = doc;
     }
 
-    applyKeyframe(k) {
+    applyKeyframe() {
         let { onKeyframe } = this.props;
-        let keyframe = clonedeep(k);
+        let keyframe = clonedeep(this.sharedb.data);
         onKeyframe(keyframe);
-    }
-
-    commitOP(op) {
-        let doc = this.doc;
-        doc.submitOp(op);
     }
 
     renderSlides() {
         let slides = this.props.slides || {};
-        let commitOP = this.commitOP;
 
         return Object.keys(slides).map(id => {
             let item = slides[id];
             let path = [id];
             switch (item.type) {
                 case 'at':
-                    return <ArcherText data={item} path={path} key={id} commitOP={commitOP} />;
+                    return <ArcherTextarea data={item} path={path} key={id} />;
                 case 'ai':
-                    return <ArcherImage data={item} path={path} key={id} commitOP={commitOP} />;
+                    return <ArcherImage data={item} path={path} key={id} />;
                 default:
                     return null;
             }

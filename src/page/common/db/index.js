@@ -1,7 +1,4 @@
-export const commitOP (op) {
-  let oplist = localStorage.getItem('oplist') || '{}';
-  oplist = JSON.parse(oplist);
-  oplist.push(op);
-  oplist = JSON.stringify(oplist);
-  localStorage.setItem('oplist', oplist);
-}
+export const commitOP = (op) => {
+    const sharedb = window.sharedb;
+    sharedb.submitOp(op);
+};
