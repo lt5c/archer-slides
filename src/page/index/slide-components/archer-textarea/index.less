@@ -1,6 +1,23 @@
 
+.archer-textarea-wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+
+    &.edit {
+        border: 1px solid rgba(0,0,0,0.5);
+    }
+}
+
 .archer-textarea {
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    overflow-y: hidden;
+    border: 0;
+    resize: none;
+
+    &.edit {
+        cursor: text;
+    }
 }

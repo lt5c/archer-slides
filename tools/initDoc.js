@@ -6,10 +6,15 @@ module.exports = {
             y: 50,
         },
         size: {
-            width: 100,
-            height: 20,
+            width: 300,
+            height: 100,
         },
         text: 'hello world',
+        style: {
+            fontSize: '24',
+            textAlign: 'center',
+            verticalAlign: 'middle',
+        }
     },
     ai0x81: {
         type: 'ai',

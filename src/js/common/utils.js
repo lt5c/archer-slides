@@ -16,3 +16,14 @@ export const isChildOf = (child, parent) => {
     }
     return !!children;
 };
+
+// 节流函数
+export const throttle = (time) => {
+    let timeout = null;
+    return fn => {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            fn();
+        }, time);
+    };
+};
