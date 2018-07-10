@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { request } from 'page/common/actions/actions';
 import {
     getAction,
-    jsonOP,
     onKeyframe
 } from '../actions/actions';
 
@@ -20,7 +19,6 @@ function mapDispatchToProps(dispatch) {
     return {
         request: (cgiName, params, opts) => dispatch(request(cgiName, params, opts)),
         getAction: (value) => dispatch(getAction(value)),
-        jsonOP: (op, source, render) => dispatch(jsonOP(op, source, render)),
         onKeyframe: (keyframe) => dispatch(onKeyframe(keyframe)),
     };
 }
