@@ -1,4 +1,5 @@
 // TODO:textarea改为表格editor形式(编辑时不同步,后来后覆盖),后续应该改为文本editor形式(协同编辑),目前采用的json0协同算法,也是支持这个能力的
+// TODO:把textarea换成draft-js
 
 import React, { Component } from 'react';
 import ArcherRnd from '../archer-rnd';
@@ -85,7 +86,7 @@ class ArcherTextarea extends Component {
     }
 
     onGlobalMouseup = e => {
-        console.debug('global mousedown');
+        console.debug('global mouseup');
         const container = this.wrapper.parentNode;
         if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
             if (!isChildOf(e.target, container)) {

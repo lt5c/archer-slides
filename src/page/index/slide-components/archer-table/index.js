@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Connect from '../../connect/connect';
 import ArcherRnd from '../archer-rnd';
-import clonedeep from 'lodash.clonedeep';
 import Handsontable from 'handsontable';
+import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
 
 import './index.less';
 
@@ -10,26 +9,27 @@ class ArcherTable extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-          editable: false,
+            cmpState: SLIDE_CMP_STATE.UNSELECTED
         };
+        this.tableDom = null;
     }
 
     componentDidMount() {
-      
+        this.hot = new Handsontable(this.tableDom, {
+            data: this.props.data.data
+        });
     }
 
-
-
     render() {
-      let {editable} = this.state;
-      let {data} = this.props;
+        let { cmpState } = this.state;
+        let { data } = this.props;
 
-      return (
-          <ArcherRnd {...this.props} editable={editable}>
-            <div ref='table' className='archer-table'>
-            </div>
-          </ArcherRnd>
-      );
+        return (
+            <ArcherRnd {...this.props} cmpState={cmpState}>
+                <div ref={dom => { this.tableDom = dom }} className="archer-table">
+                </div>
+            </ArcherRnd>
+        );
     }
 }
 
