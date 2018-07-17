@@ -5,6 +5,9 @@ import clonedeep from 'lodash.clonedeep';
 
 import ArcherTextarea from '../slide-components/archer-textarea';
 import ArcherImage from '../slide-components/archer-image';
+import ArcherTable from '../slide-components/archer-table';
+
+import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
 
 import './index.less';
 
@@ -49,10 +52,12 @@ class Wrapper extends Component {
             let item = slides[id];
             let path = [id];
             switch (item.type) {
-                case 'at':
+                case TYPE.TEXTAREA:
                     return <ArcherTextarea data={item} path={path} key={id} />;
-                case 'ai':
+                case TYPE.IMAGE:
                     return <ArcherImage data={item} path={path} key={id} />;
+                case TYPE.TABLE:
+                    return <ArcherTable data={item} path={path} key={id} />;
                 default:
                     return null;
             }

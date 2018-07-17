@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import ArcherRnd from '../archer-rnd';
-import Handsontable from 'handsontable';
+import Handsontable from 'handsontable'
 import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
 
 import './index.less';
+
+import 'handsontable/dist/handsontable.full.css';
+
 
 class ArcherTable extends Component {
     constructor(props, context) {
@@ -11,22 +14,28 @@ class ArcherTable extends Component {
         this.state = {
             cmpState: SLIDE_CMP_STATE.UNSELECTED
         };
-        this.tableDom = null;
+        this.hot = null;
+        this.id = null;
     }
 
     componentDidMount() {
-        this.hot = new Handsontable(this.tableDom, {
+        const container = document.getElementById(this.id);
+        this.hot = new Handsontable(container, {
             data: this.props.data.data
         });
+        console.log('test');
     }
 
     render() {
         let { cmpState } = this.state;
-        let { data } = this.props;
+        let { data, id } = this.props;
+
+        const { width, height } = data.size;
+        this.id = `hot${id}`;
 
         return (
             <ArcherRnd {...this.props} cmpState={cmpState}>
-                <div ref={dom => { this.tableDom = dom }} className="archer-table">
+                <div id={this.id} className="archer-table">
                 </div>
             </ArcherRnd>
         );

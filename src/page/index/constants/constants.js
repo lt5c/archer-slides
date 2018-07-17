@@ -5,3 +5,9 @@ export const SLIDE_CMP_STATE = {
     SELECTED: 1,
     EDITING: 2
 };
+
+export const SLIDE_CMP_TYPE = {
+    TEXTAREA: 't',
+    IMAGE: 'i',
+    TABLE: 'tb',
+};
