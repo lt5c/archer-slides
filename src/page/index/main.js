@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
-    window.console.dev = function(msg) {
-        console.log(msg);
+    window.console.dev = function(...msg) {
+        console.log(...msg);
     };
     // use it for hot reload
     module.exports = require('./root/Root.hot');

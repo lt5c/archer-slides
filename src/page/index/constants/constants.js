@@ -13,5 +13,7 @@ export const SLIDE_CMP_TYPE = {
 };
 
 export const DEFAULT_TABLE_SETTINGS = {
-    contextMenu: true
+    contextMenu: true,
+    startRows: 3,
+    startCols: 3,
 };

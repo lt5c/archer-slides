@@ -3,6 +3,8 @@ import ArcherRnd from '../archer-rnd';
 import Handsontable from 'handsontable'
 import { SLIDE_CMP_STATE, DEFAULT_TABLE_SETTINGS } from 'page/index/constants/constants';
 import assign from 'lodash.assign';
+// import { ArcherAction } from 'page/common/db'
+import { onDataChange, onRowsChange } from './tableListener';
 
 import './index.less';
 import 'handsontable/dist/handsontable.full.css';
@@ -44,11 +46,8 @@ class ArcherTable extends Component {
         const container = this.table;
         const settings = assign(DEFAULT_TABLE_SETTINGS, this.props.data.settings);
         window.hot = this.hot = new Handsontable(container, settings);
-    }
-
-    onDataChange() {
-        const data = this.hot.getData();
-        
+        this.hot.addHook('afterChange', onDataChange.bind(this));
+        this.hot.addHook('afterCreateRow', onRowsChange.bind(this));
     }
 
     render() {
