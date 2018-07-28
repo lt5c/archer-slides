@@ -11,3 +11,7 @@ export const SLIDE_CMP_TYPE = {
     IMAGE: 'i',
     TABLE: 'tb',
 };
+
+export const DEFAULT_TABLE_SETTINGS = {
+    contextMenu: true
+};

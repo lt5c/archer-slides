@@ -45,6 +45,7 @@
     "es6-promise": "^4.2.4",
     "handsontable": "^5.0.0",
     "hat": "0.0.3",
+    "lodash.assign": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.1",
     "make-error": "^1.1.1",
