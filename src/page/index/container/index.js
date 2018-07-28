@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import Connect from '../connect/connect';
+import {
+    inject,
+    observer
+} from 'mobx-react';
+import {
+    action
+} from 'mobx';
 import ShareDB from 'page/common/sharejs';
 import clonedeep from 'lodash.clonedeep';
 
@@ -13,7 +19,8 @@ import './index.less';
 
 window.sharedb = ShareDB.connect();
 
-
+@inject('slidesStore')
+@observer
 class Wrapper extends Component {
     constructor(props, context) {
         super(props, context);
@@ -40,13 +47,13 @@ class Wrapper extends Component {
     }
 
     applyKeyframe() {
-        let { onKeyframe } = this.props;
+        let { onKeyframe } = this.props.slidesStore;
         let keyframe = clonedeep(this.sharedb.data);
         onKeyframe(keyframe);
     }
 
     renderSlides() {
-        let slides = this.props.slides || {};
+        let slides = this.props.slidesStore.slides || {};
 
         return Object.keys(slides).map(id => {
             let item = slides[id];
@@ -83,4 +90,4 @@ class Wrapper extends Component {
     }
 }
 
-export default Connect(Wrapper);
+export default Wrapper;
