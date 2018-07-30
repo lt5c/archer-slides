@@ -10,7 +10,7 @@ class ArcherTableWrapper extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            cmpState: SLIDE_CMP_STATE.SELECTED,
+            cmpState: SLIDE_CMP_STATE.UNSELECTED,
         };
         this.ref = null;
     }

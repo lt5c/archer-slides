@@ -1,11 +1,15 @@
 # To-Do
-- [ ] Textarea
-- [ ] Image
+- [x] Textarea
+- [x] Image
 - [ ] Shape
-- [ ] Table
+- [x] Table
 - [ ] 侧边栏
 - [ ] 顶部栏
 - [ ] 预览
+
+# ArcherAction
+* 封装好的协作action
+* 封装了发送action的方法 submit 和 packageSubmit
 
 # steamer-react
 react 高效快速启动脚手架
