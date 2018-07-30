@@ -77,11 +77,11 @@ class ArcherRnd extends Component {
 
     render() {
         let { resizing } = this.state;
-        let { data, cmpState } = this.props;
+        let { data, cmpState, disableResizing, className } = this.props;
 
         // 生成拖拽框的配置
         const dragable = cmpState !== SLIDE_CMP_STATE.UNSELECTED;
-        const resizable = cmpState !== SLIDE_CMP_STATE.UNSELECTED;
+        const resizable = !disableResizing && cmpState !== SLIDE_CMP_STATE.UNSELECTED;
         const size = '10px';
         let rndConfig = {
             bound: 'parent',
@@ -177,7 +177,7 @@ class ArcherRnd extends Component {
         };
 
         return (
-            <Rnd {...rndConfig} {...rndStyle} {...rndHandler}>
+            <Rnd {...rndConfig} {...rndStyle} {...rndHandler} className={className || ''} >
                 {this.props.children}
             </Rnd>
         );

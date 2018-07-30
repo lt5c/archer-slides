@@ -11,7 +11,7 @@ import clonedeep from 'lodash.clonedeep';
 
 import ArcherTextarea from '../slide-components/archer-textarea';
 import ArcherImage from '../slide-components/archer-image';
-import ArcherTable from '../slide-components/archer-table';
+import ArcherTableWrapper from '../slide-components/archer-table/index.js';
 
 import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
 
@@ -29,6 +29,7 @@ class Wrapper extends Component {
         this.renderSlides = this.renderSlides.bind(this);
         this.applyKeyframe = this.applyKeyframe.bind(this);
         this.sharedb = window.sharedb;
+        this.op_source = false;
     }
 
     componentDidMount() {
@@ -40,9 +41,8 @@ class Wrapper extends Component {
         const sharedb = this.sharedb;
         sharedb.subscribe(this.applyKeyframe);
         sharedb.on('op', (op, source) => {
-            // if (!source) {
+            this.op_source = source;
             this.applyKeyframe(sharedb.data);
-            // }
         });
     }
 
@@ -64,7 +64,7 @@ class Wrapper extends Component {
                 case TYPE.IMAGE:
                     return <ArcherImage data={item} path={path} key={id} />;
                 case TYPE.TABLE:
-                    return <ArcherTable data={item} path={path} key={id} />;
+                    return <ArcherTableWrapper data={item} path={path} key={id} id={id} op_source={this.op_source} />;
                 default:
                     return null;
             }

@@ -1,69 +1,56 @@
 import React, { Component } from 'react';
 import ArcherRnd from '../archer-rnd';
-import Handsontable from 'handsontable'
-import { SLIDE_CMP_STATE, DEFAULT_TABLE_SETTINGS } from 'page/index/constants/constants';
-import assign from 'lodash.assign';
-// import { ArcherAction } from 'page/common/db'
-import { onDataChange, onRowsChange } from './tableListener';
+import ArcherTable from './table';
+import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
+import { isChildOf } from 'utils';
 
 import './index.less';
-import 'handsontable/dist/handsontable.full.css';
 
-
-class ArcherTable extends Component {
+class ArcherTableWrapper extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            cmpState: SLIDE_CMP_STATE.UNSELECTED,
-            shouldUpdate: true,
+            cmpState: SLIDE_CMP_STATE.SELECTED,
         };
-        this.hot = null;
-        this.table = null;
+        this.ref = null;
     }
 
     componentDidMount() {
-        this.setState({
-            shouldUpdate: false
-        });
+        window.addEventListener('mouseup', this.onGlobalMouseup);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // 真正更正表格的地方
-        if (!this.state.shouldUpdate) {
-            this.hot.updateSettings(nextProps.data.settings);
+    componentWillUnmount() {
+        window.removeEventListener('mouseup', this.onGlobalMouseup);
+    }
+
+    onGlobalMouseup = e => {
+        console.debug('global mouseup');
+        const container = this.ref.parentNode;
+        const { cmpState } = this.state;
+        if (cmpState === SLIDE_CMP_STATE.SELECTED && !isChildOf(e.target, container)) {
+            this.setState({
+                cmpState: SLIDE_CMP_STATE.UNSELECTED
+            });
+        } else if (cmpState === SLIDE_CMP_STATE.UNSELECTED && isChildOf(e.target, container)) {
+            this.setState({
+                cmpState: SLIDE_CMP_STATE.SELECTED
+            });
         }
-
-        return this.state.shouldUpdate;
-    }
-
-    componentDidUpdate() {
-        /**
-         * 本来应该在componetDidMount的时候渲染表格
-         * 但是用了Rnd这个组件，导致在componetDidMount时拿不到table dom
-         * 所以把表格渲染延迟到componentDidUpdate
-         */
-
-        const container = this.table;
-        const settings = assign(DEFAULT_TABLE_SETTINGS, this.props.data.settings);
-        window.hot = this.hot = new Handsontable(container, settings);
-        this.hot.addHook('afterChange', onDataChange.bind(this));
-        this.hot.addHook('afterCreateRow', onRowsChange.bind(this));
     }
 
     render() {
         let { cmpState } = this.state;
-        let { data, id } = this.props;
 
-        const { width, height } = data.size;
-        this.id = `hot${id}`;
+        const className = `archer-table-wrapper ${cmpState === SLIDE_CMP_STATE.SELECTED ? 'selected' : 'unselected'}`
 
         return (
-            <ArcherRnd {...this.props} cmpState={cmpState}>
-                <div ref={dom => { this.table = dom }} id={this.id} className="archer-table">
+            <ArcherRnd {...this.props} cmpState={cmpState} disableResizing={true} className={className} >
+                <div ref={dom => { this.ref = dom }} >
+                    <ArcherTable {...this.props} />
                 </div>
             </ArcherRnd>
         );
     }
 }
 
-export default ArcherTable;
+export default ArcherTableWrapper;

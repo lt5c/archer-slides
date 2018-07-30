@@ -22,4 +22,14 @@ export const onDataChange = function(changes, source) {
 
 export const onRowsChange = function(index, amount, source) {
     console.dev('rowchange soruce', source);
+
+    const action = getDataChangeAction.bind(this)();
+    ArcherAction.submit(action);
+};
+
+export const onColsChange = function(index, amount, source) {
+    console.dev('colchange soruce', source);
+
+    const action = getDataChangeAction.bind(this)();
+    ArcherAction.submit(action);
 };
