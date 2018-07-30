@@ -13,13 +13,16 @@ import ArcherTextarea from '../slide-components/archer-textarea';
 import ArcherImage from '../slide-components/archer-image';
 import ArcherTableWrapper from '../slide-components/archer-table/index.js';
 
+import RevealRender from '../components/revealRender';
+
 import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
 
 import './index.less';
 
 window.sharedb = ShareDB.connect();
 
-@inject('slidesStore')
+@inject('slidesStore', 'commonStore')
+
 @observer
 class Wrapper extends Component {
     constructor(props, context) {
@@ -75,16 +78,20 @@ class Wrapper extends Component {
         let mainStyle = {
             height: (window.innerHeight - 50) + 'px',
         };
+        const { commonStore, slidesStore } = this.props;
 
         return (
             <div className="wrapper">
-                <div className="toolbar"></div>
+                <div className="toolbar">
+                    <button onClick={this.props.commonStore.toggleShowRevealRender} >预览</button>
+                </div>
                 <div className="main" style={mainStyle}>
                     <div className="sidebar"></div>
                     <div className="editor">
                         {this.renderSlides()}
                     </div>
                 </div>
+                <RevealRender showRevealRender={commonStore.showRevealRender} slides={slidesStore.slides} />
             </div>
         );
     }
