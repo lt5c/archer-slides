@@ -91,7 +91,10 @@ class Wrapper extends Component {
                         {this.renderSlides()}
                     </div>
                 </div>
-                <RevealRender showRevealRender={commonStore.showRevealRender} slides={slidesStore.slides} />
+                commonStore.showRevealRender?
+                    <RevealRender slides={slidesStore.slides} />
+                    :
+                    null
             </div>
         );
     }
