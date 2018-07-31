@@ -5,11 +5,15 @@
 - [x] Table
 - [ ] 侧边栏
 - [ ] 顶部栏
-- [ ] 预览
+- [x] 预览
 
-# ArcherAction
-* 封装好的协作action
-* 封装了发送action的方法 submit 和 packageSubmit
+# 数据协同
+* 原理是OT算法, 实践是json0框架
+* ArcherAction封装了协作action
+* ArcherAction封装了发送action的方法 submit 和 packageSubmit
+
+# PPT播放
+通过reveal.js实现,具体实现在RevealPlayer
 
 # steamer-react
 react 高效快速启动脚手架
