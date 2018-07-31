@@ -1,5 +1,5 @@
 import React from 'react';
-import { SLIDE_CMP_TYPE as TYPE } from 'page/index/constants/constants';
+import { SLIDE_CMP_TYPE as TYPE, DEFAULT_TABLE_DATA } from 'page/index/constants/constants';
 
 const TemplateMap = {};
 const createStyle = (item) => {
@@ -30,11 +30,12 @@ TemplateMap[TYPE.IMAGE] = (item) => {
 };
 
 TemplateMap[TYPE.TABLE] = (item) => {
+    const data = item.settings.data || DEFAULT_TABLE_DATA;
     const style = createStyle(item);
     return (
         <table style={style}>
             <tbody>
-                {item.settings.data.map((rowArray, row) => {
+                {data.map((rowArray, row) => {
                     return (
                         <tr key={row}>
                             {rowArray.map((colItem, col) => {

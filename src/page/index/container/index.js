@@ -29,7 +29,7 @@ class Wrapper extends Component {
         super(props, context);
         this.state = {};
 
-        this.renderSlides = this.renderSlides.bind(this);
+        this.renderSlide = this.renderSlide.bind(this);
         this.applyKeyframe = this.applyKeyframe.bind(this);
         this.sharedb = window.sharedb;
         this.op_source = false;
@@ -55,12 +55,18 @@ class Wrapper extends Component {
         onKeyframe(keyframe);
     }
 
-    renderSlides() {
-        let slides = this.props.slidesStore.slides || {};
+    /**
+     * 渲染focus slide
+     * @return {React} focus slide
+     */
+    renderSlide() {
+        const slide = this.props.slidesStore.curSlide || {};
+        const slideId = this.props.slidesStore.focusId;
+        const dir = ['slides', slideId];
 
-        return Object.keys(slides).map(id => {
-            let item = slides[id];
-            let path = [id];
+        return Object.keys(slide).map(id => {
+            let item = slide[id];
+            let path = dir.concat(id);
             switch (item.type) {
                 case TYPE.TEXTAREA:
                     return <ArcherTextarea data={item} path={path} key={id} />;
@@ -87,12 +93,14 @@ class Wrapper extends Component {
                 </div>
                 <div className="main" style={mainStyle}>
                     <div className="sidebar"></div>
-                    <div className="editor">
-                        {this.renderSlides()}
+                    <div className="editor-wrapper">
+                        <div className="editor">
+                            {this.renderSlide()}
+                        </div>
                     </div>
                 </div>
                 {commonStore.showRevealRender ?
-                    <RevealPlayer slides={slidesStore.slides} />
+                    <RevealPlayer slides={slidesStore.curSlide} />
                     :
                     null
                 }

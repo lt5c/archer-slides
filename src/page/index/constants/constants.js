@@ -17,3 +17,9 @@ export const DEFAULT_TABLE_SETTINGS = {
     startRows: 3,
     startCols: 3,
 };
+
+export const DEFAULT_TABLE_DATA = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+];
