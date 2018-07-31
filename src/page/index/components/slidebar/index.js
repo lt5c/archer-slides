@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Reveal from 'libs/reveal/reveal';
 
-// import './index.less';
+import './index.less';
 
 class Slidebar extends Component {
     constructor(props, context) {
@@ -10,10 +10,12 @@ class Slidebar extends Component {
         };
     }
 
-    renderTab(tabid) {
-        const { tabClickHandler } = this.props;
+    renderTab(tabid, index) {
+        const { clickHandler } = this.props;
         return (
-            <div key={tabid} className="tab" onClick={tabClickHandler} />
+            <div key={tabid} className="tab" onClick={() => clickHandler(tabid)}>
+                <div>{index+1}</div>
+            </div>
         );
     }
 
@@ -22,10 +24,10 @@ class Slidebar extends Component {
 
         return (
             <div className="slidebar-content-wrapper">
-                {tabs.map((tabid) => this.renderTab(tabid))}
+                {tabs.map((tabid, index) => this.renderTab(tabid, index))}
             </div>
         );
     }
 }
 
-export default RevealPlayer;
+export default Slidebar;

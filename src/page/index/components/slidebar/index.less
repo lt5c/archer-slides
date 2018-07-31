@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+@tabSize: 120px;
+
+.slidebar-content-wrapper {
+    width: 100%;
+    overflow-y: auto;
+
+    .tab {
+        margin: 20px auto 0 auto;
+        width: @tabSize;
+        height: @tabSize;
+        background-color: gray;
+
+        div {
+            font-size: 40px;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: @tabSize;
+            // margin: auto auto;
+        }
+    }
+}

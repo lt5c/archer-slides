@@ -51,6 +51,10 @@ module.exports = {
         }
     },
     tabs: [
-        'slide0x88'
+        'slide0x88',
+        'slide0x87',
+        'slide0x86',
+        'slide0x85',
+        'slide0x84',
     ],
 };

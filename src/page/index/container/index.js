@@ -14,6 +14,7 @@ import ArcherImage from '../slide-components/archer-image';
 import ArcherTableWrapper from '../slide-components/archer-table/index.js';
 
 import RevealPlayer from '../components/revealPlayer';
+import Slidebar from '../components/slidebar';
 
 import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
 
@@ -92,7 +93,9 @@ class Wrapper extends Component {
                     <button onClick={this.props.commonStore.toggleShowRevealRender} >预览</button>
                 </div>
                 <div className="main" style={mainStyle}>
-                    <div className="sidebar"></div>
+                    <div className="sidebar">
+                        <Slidebar tabs={slidesStore.tabs} clickHandler={slidesStore.selectTab} />
+                    </div>
                     <div className="editor-wrapper">
                         <div className="editor">
                             {this.renderSlide()}
