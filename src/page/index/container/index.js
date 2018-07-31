@@ -13,7 +13,7 @@ import ArcherTextarea from '../slide-components/archer-textarea';
 import ArcherImage from '../slide-components/archer-image';
 import ArcherTableWrapper from '../slide-components/archer-table/index.js';
 
-import RevealRender from '../components/revealRender';
+import RevealPlayer from '../components/revealPlayer';
 
 import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
 
@@ -92,7 +92,7 @@ class Wrapper extends Component {
                     </div>
                 </div>
                 {commonStore.showRevealRender ?
-                    <RevealRender slides={slidesStore.slides} />
+                    <RevealPlayer slides={slidesStore.slides} />
                     :
                     null
                 }

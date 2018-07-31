@@ -7,7 +7,7 @@ import './index.less';
 import 'libs/reveal/css/reveal.css';
 import 'libs/reveal/css/theme/black.css';
 
-class RevealRender extends Component {
+class RevealPlayer extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -51,4 +51,4 @@ class RevealRender extends Component {
     }
 }
 
-export default RevealRender;
+export default RevealPlayer;
