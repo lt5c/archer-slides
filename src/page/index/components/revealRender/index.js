@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 // import { isChildOf } from 'utils';
 import Reveal from 'libs/reveal/reveal';
+import { renderTemplate } from './template';
 
 import './index.less';
 import 'libs/reveal/css/reveal.css';
-// import 'libs/reveal/css/theme/night.css';
-// import 'libs/reveal/lib/font/source-sans-pro/source-sans-pro.css'
+import 'libs/reveal/css/theme/black.css';
 
 class RevealRender extends Component {
     constructor(props, context) {
@@ -19,8 +19,15 @@ class RevealRender extends Component {
         Reveal.initialize();
     }
 
+    renderSection(slide) {
+        return Object.keys(slide).map(id => {
+            const item = slide[id];
+            return renderTemplate(item);
+        });
+    }
+
     render() {
-        // const { slides } = this.props;
+        const { slides } = this.props;
         // return (
         //     showRevealRender ?
         //         <iframe ref={dom => { this.iframeDom = dom }} className="reveal-render" src="http://localhost:8000" />
@@ -31,7 +38,11 @@ class RevealRender extends Component {
             <div className="reveal-wrapper">
                 <div className="reveal">
                     <div className="slides">
-                        <section>Slide 1</section>
+                        <section>
+                            {
+                                this.renderSection(slides)
+                            }
+                        </section>
                         <section>Slide 2</section>
                     </div>
                 </div>
