@@ -5,7 +5,7 @@ const getDataChangeAction = function() {
     const newData = this.hot.getData();
     const oldData = settings.data;
     const path = this.props.path.concat('settings', 'data');
-    const action = ArcherAction.getChangeObjectAction(path, oldData, newData);
+    const action = ArcherAction.getObjectChangeAction(path, oldData, newData);
     return action;
 };
 
