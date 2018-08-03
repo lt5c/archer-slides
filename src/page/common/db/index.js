@@ -1,11 +1,10 @@
+import { getRandom } from 'utils';
+import { SLIDES_CONTENT_PATH, TAB_PATH } from '../constants/';
+
 export const commitOP = (op) => {
     const sharedb = window.sharedb;
     sharedb.submitOp(op);
 };
-
-export const createTab = (index) => {
-
-}
 
 export const ArcherAction = {
     getObjectChangeAction: (path, oldObj, newObj) => {
@@ -30,34 +29,32 @@ export const ArcherAction = {
         }];
         return action;
     },
-    getArrayChangeAction: (path, oldObj, newObj) => {
+    getArrayChangeAction: (path, index, oldObj, newObj) => {
         const action = [{
-            p: path,
+            p: path.concat(index),
             ld: oldObj,
             li: newObj,
         }];
         return action;
     },
-    getArrayInsertAction: (path, newObj) => {
+    getArrayInsertAction: (path, index, newObj) => {
         const action = [{
-            p: path,
+            p: path.concat(index),
             li: newObj,
         }];
         return action;
     },
-    getArrayRemoveAction: (path, oldObj, newObj) => {
+    getArrayRemoveAction: (path, index, oldObj) => {
         const action = [{
-            p: path,
-            od: oldObj,
-            oi: newObj,
+            p: path.concat(index),
+            ld: oldObj,
         }];
         return action;
     },
-    getArrayMoveAction: (path, oldObj, newObj) => {
+    getArrayMoveAction: (path, indexFrom, indexTo) => {
         const action = [{
-            p: path,
-            od: oldObj,
-            oi: newObj,
+            p: path.concat(indexFrom),
+            lm: indexTo,
         }];
         return action;
     },
@@ -68,5 +65,22 @@ export const ArcherAction = {
         actions.forEach(action => {
             commitOP(action);
         });
+    },
+};
+
+export const TabUtils = {
+    insertTab: (index) => {
+        const tabid = `slide-${getRandom(5)}`;
+        // 添加slide内容
+        const content = {};
+        const path1 = [SLIDES_CONTENT_PATH, tabid];
+        const action1 = ArcherAction.getObjectInsertAction(path1, content);
+        // 添加tabid
+        const path2 = [TAB_PATH];
+        const action2 = ArcherAction.getArrayInsertAction(path2, index, tabid);
+
+        ArcherAction.packageSubmit(action1, action2);
+
+        return tabid;
     },
 };

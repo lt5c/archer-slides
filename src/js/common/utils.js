@@ -27,3 +27,7 @@ export const throttle = (time) => {
         }, time);
     };
 };
+
+export const getRandom = (length) => {
+    return Math.random().toString(36).substr(length);
+}

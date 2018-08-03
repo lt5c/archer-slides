@@ -14,6 +14,10 @@ export default class Slides {
         return (this.focusId && this.slides[this.focusId]);
     }
 
+    @computed get tabCount() {
+        return (((this.tabs instanceof Array)  && this.tabs.length) || 0);
+    }
+
     @action.bound
     onKeyframe = (keyframe) => {
         this.slides = keyframe.slides;
