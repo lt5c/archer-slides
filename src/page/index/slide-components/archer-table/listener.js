@@ -1,4 +1,4 @@
-import { ArcherAction } from 'page/common/db'
+import ArcherAction from 'page/common/db/ArcherAction';
 
 const getDataChangeAction = function() {
     const { settings } = this.props.data;

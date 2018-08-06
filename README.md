@@ -11,6 +11,7 @@
 * 原理是OT算法, 实践是json0框架
 * ArcherAction封装了协作action
 * ArcherAction封装了发送action的方法 submit 和 packageSubmit
+* 所有涉及action的逻辑，submit action都应该作为代码块的最后一环，submit action后不提供成功回调，因为render是自动触发的，且是异步的，所以无法保证状态。正确做法是submit action之前，就把所有数据设置正确。
 
 # PPT播放
 通过reveal.js实现,具体实现在RevealPlayer

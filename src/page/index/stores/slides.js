@@ -13,9 +13,15 @@ export default class Slides {
     @computed get curSlide() {
         return (this.focusId && this.slides[this.focusId]);
     }
+    @computed get curSlideID() {
+        return this.focusId;
+    }
+    @computed get curSlideIndex() {
+        return this.tabs.findIndex(tabid => tabid === this.focusId);
+    }
 
     @computed get tabCount() {
-        return (((this.tabs instanceof Array)  && this.tabs.length) || 0);
+        return (((this.tabs instanceof Array) && this.tabs.length) || 0);
     }
 
     @action.bound

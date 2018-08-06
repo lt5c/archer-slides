@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Rnd from 'react-rnd';
-import { commitOP } from 'page/common/db';
+import ArcherAction from 'page/common/db/ArcherAction';
 import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
 
 /**
@@ -23,42 +23,36 @@ class ArcherRnd extends Component {
         // 位置变动,组装op
         let { data, path } = this.props;
         if (draggableData.x !== data.position.x || draggableData.y !== data.position.y) {
-            let op = [{
-                p: path.concat('position'),
-                od: data.position,
-                oi: { x: draggableData.x, y: draggableData.y }
-            }];
-            console.debug('at', 'op', 'drag', op);
-            commitOP(op, 'at', false);
+            const oldObj = data.position;
+            const newObj = { x: draggableData.x, y: draggableData.y };
+            const subPath = path.concat('position');
+            const action = ArcherAction.getObjectChangeAction(subPath, oldObj, newObj);
+            ArcherAction.submit(action);
         }
     }
 
     sizeOP(delta, position) {
-        console.debug(delta);
         // 大小变动,组装op
         let { data, path } = this.props;
-        let op = [];
+        // let op = [];
+        let actions = [];
         if (position.x !== data.position.x || position.y !== data.position.y) {
-            op.push({
-                p: path.concat('position'),
-                od: data.position,
-                oi: { x: position.x, y: position.y }
-            });
+            const subPath = path.concat('position');
+            const newPosition = { x: position.x, y: position.y };
+            const action = ArcherAction.getObjectChangeAction(subPath, data.position, newPosition);
+            actions.push(action);
         }
         if (delta.width !== 0 || delta.height !== 0) {
-            let size = {
+            const subPath = path.concat('size');
+            const size = {
                 width: data.size.width + delta.width,
                 height: data.size.height + delta.height,
             };
-            op.push({
-                p: path.concat('size'),
-                od: data.size,
-                oi: size
-            });
+            const action = ArcherAction.getObjectChangeAction(subPath, data.size, size);
+            actions.push(action);
         }
 
-        console.debug('at', 'op', 'resize', op);
-        commitOP(op, 'at', false);
+        ArcherAction.packageSubmit(...actions);
     }
 
     onResizeStart() {

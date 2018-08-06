@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import ArcherRnd from '../archer-rnd';
 import clonedeep from 'lodash.clonedeep';
 import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
-import { commitOP } from 'page/common/db';
+import ArcherAction from 'page/common/db/ArcherAction';
 import { isChildOf, throttle } from 'utils';
 
 import './index.less';
@@ -76,13 +76,8 @@ class ArcherTextarea extends Component {
         if (!text || text === data.text) {
             return;
         }
-        let op = [{
-            p: path.concat('text'),
-            od: data.text,
-            oi: clonedeep(text)
-        }];
-        console.debug('at', 'op', 'text', op);
-        commitOP(op, 'at', false);
+        const subPath = path.concat('text');
+        ArcherAction.submit(subPath, clonedeep(text), data.text);
     }
 
     onGlobalMouseup = e => {

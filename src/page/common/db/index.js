@@ -1,86 +1,58 @@
 import { getRandom } from 'utils';
-import { SLIDES_CONTENT_PATH, TAB_PATH } from '../constants/';
+import clonedeep from 'lodash.clonedeep';
+import {
+    SLIDES_CONTENT_PATH,
+    TAB_PATH,
+    // action type
+    ARCHER_TABLE_TYPE,
+    ARCHER_IMAGE_TYPE,
+    ARCHER_TEXTAREA_TYPE,
+    // action initContent
+    ARCHER_TABLE_INIT_CONTENT,
+    ARCHER_IMAGE_INIT_CONTENT,
+    ARCHER_TEXTAREA_INIT_CONTENT,
+} from '../constants/';
 
-export const commitOP = (op) => {
-    const sharedb = window.sharedb;
-    sharedb.submitOp(op);
+import ArcherAction from './ArcherAction';
+
+export const insertTab = (index) => {
+    console.dev('insertTab', index);
+    const tabid = `slide-${getRandom(5)}`;
+    // 添加slide内容
+    const content = {};
+    const path1 = [SLIDES_CONTENT_PATH, tabid];
+    const action1 = ArcherAction.getObjectInsertAction(path1, content);
+    // 添加tabid
+    const path2 = [TAB_PATH];
+    const action2 = ArcherAction.getArrayInsertAction(path2, index + 1, tabid);
+
+    ArcherAction.packageSubmit(action1, action2);
+
+    return tabid;
 };
 
-export const ArcherAction = {
-    getObjectChangeAction: (path, oldObj, newObj) => {
-        const action = [{
-            p: path,
-            od: oldObj,
-            oi: newObj,
-        }];
-        return action;
-    },
-    getObjectInsertAction: (path, newObj) => {
-        const action = [{
-            p: path,
-            oi: newObj,
-        }];
-        return action;
-    },
-    getObjectRemoveAction: (path, oldObj) => {
-        const action = [{
-            p: path,
-            od: oldObj,
-        }];
-        return action;
-    },
-    getArrayChangeAction: (path, index, oldObj, newObj) => {
-        const action = [{
-            p: path.concat(index),
-            ld: oldObj,
-            li: newObj,
-        }];
-        return action;
-    },
-    getArrayInsertAction: (path, index, newObj) => {
-        const action = [{
-            p: path.concat(index),
-            li: newObj,
-        }];
-        return action;
-    },
-    getArrayRemoveAction: (path, index, oldObj) => {
-        const action = [{
-            p: path.concat(index),
-            ld: oldObj,
-        }];
-        return action;
-    },
-    getArrayMoveAction: (path, indexFrom, indexTo) => {
-        const action = [{
-            p: path.concat(indexFrom),
-            lm: indexTo,
-        }];
-        return action;
-    },
-    submit: (action) => {
-        commitOP(action);
-    },
-    packageSubmit: (...actions) => {
-        actions.forEach(action => {
-            commitOP(action);
-        });
-    },
+export const insertTable = (tabid) => {
+    return insertSection(tabid, ARCHER_TABLE_TYPE, ARCHER_TABLE_INIT_CONTENT);
 };
 
-export const TabUtils = {
-    insertTab: (index) => {
-        const tabid = `slide-${getRandom(5)}`;
-        // 添加slide内容
-        const content = {};
-        const path1 = [SLIDES_CONTENT_PATH, tabid];
-        const action1 = ArcherAction.getObjectInsertAction(path1, content);
-        // 添加tabid
-        const path2 = [TAB_PATH];
-        const action2 = ArcherAction.getArrayInsertAction(path2, index, tabid);
+export const insertImage = (tabid) => {
+    return insertSection(tabid, ARCHER_IMAGE_TYPE, ARCHER_IMAGE_INIT_CONTENT);
+};
 
-        ArcherAction.packageSubmit(action1, action2);
+export const insertTextarea = (tabid) => {
+    return insertSection(tabid, ARCHER_TEXTAREA_TYPE, ARCHER_TEXTAREA_INIT_CONTENT);
+};
 
-        return tabid;
-    },
+const insertSection = (tabid, actionType, initContent) => {
+    if (!tabid) {
+        return false;
+    }
+    const id = `${actionType}-${getRandom(5)}`;
+    const content = clonedeep(initContent);
+    const path = [SLIDES_CONTENT_PATH, tabid, id];
+    const action = ArcherAction.getObjectInsertAction(path, content);
+
+    ArcherAction.submit(action);
+
+    return id;
 };

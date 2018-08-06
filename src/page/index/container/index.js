@@ -3,9 +3,6 @@ import {
     inject,
     observer
 } from 'mobx-react';
-import {
-    action
-} from 'mobx';
 import ShareDB from 'page/common/sharejs';
 import clonedeep from 'lodash.clonedeep';
 
@@ -15,10 +12,9 @@ import ArcherTableWrapper from '../slide-components/archer-table/index.js';
 
 import RevealPlayer from '../components/revealPlayer';
 import Slidebar from '../components/slidebar';
+import Toolbar from '../components/toolbar';
 
 import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
-
-import { TabUtils } from 'page/common/db';
 
 import './index.less';
 
@@ -59,16 +55,6 @@ class Wrapper extends Component {
         onKeyframe(keyframe);
     }
 
-    insertTab(index) {
-        const { slidesStore } = this.props;
-        if (index === undefined) {
-            index = slidesStore.tabCount - 1;
-        }
-        const newTabId = TabUtils.insertTab(index);
-        // 感觉有异步问题
-        slidesStore.selectTab(newTabId);
-    }
-
     /**
      * 渲染focus slide
      * @return {React} focus slide
@@ -103,8 +89,7 @@ class Wrapper extends Component {
         return (
             <div className="wrapper">
                 <div className="toolbar">
-                    <button onClick={e => this.insertTab()} >新增页</button>
-                    <button onClick={this.props.commonStore.toggleShowRevealRender} >预览</button>
+                    <Toolbar {...this.props} />
                 </div>
                 <div className="main" style={mainStyle}>
                     <div className="sidebar">
