@@ -77,7 +77,8 @@ class ArcherTextarea extends Component {
             return;
         }
         const subPath = path.concat('text');
-        ArcherAction.submit(subPath, clonedeep(text), data.text);
+        const action = ArcherAction.getObjectChangeAction(subPath, clonedeep(text), data.text);
+        ArcherAction.submit(action);
     }
 
     onGlobalMouseup = e => {
