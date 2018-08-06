@@ -1,51 +1,79 @@
 import React, { Component } from 'react';
-import Connect from '../../connect/connect';
 import ArcherRnd from '../archer-rnd';
-import ArcherTextarea from '../archer-textarea';
-import clonedeep from 'lodash.clonedeep';
+import { SLIDE_CMP_STATE as STATE } from 'page/index/constants/constants';
+import { isChildOf } from 'utils';
+import { observer } from 'mobx-react';
+import {
+    observable,
+    // computed,
+    action
+} from 'mobx';
 
 import './index.less';
 
+/**
+ * 九宫格图形
+ * @extends Component
+ */
+@observer
 class ArcherShape extends Component {
+
     constructor(props, context) {
         super(props, context);
-        this.state = {
-          editable: false,
-        };
-
-
-        this.onDbClick = this.onDbClick.bind(this);
-        this.onBlur = this.onBlur.bind(this);
+        this.shapeDom = null;
     }
 
     componentDidMount() {
-      // if (this.state.editable) {
-      //   this.refs.editor.focus();
-      // }
+        window.addEventListener('mouseup', this.onGlobalMouseup);
     }
 
-    onDbClick() {
-      this.setState({
-        editable: true
-      })
+    componentWillUnmount() {
+        window.removeEventListener('mouseup', this.onGlobalMouseup);
     }
 
-    onBlur() {
-      this.setState({
-        editable: false
-      })
+    @observable cmpState = STATE.UNSELECTED;
+
+    onGlobalMouseup = e => {
+        console.dev('global mouseup');
+        const container = this.shapeDom.parentNode;
+        const cmpState = this.cmpState;
+        if (cmpState === STATE.SELECTED && !isChildOf(e.target, container)) {
+            this.setCmpState(STATE.UNSELECTED);
+        }
     }
+
+    onMouseDown(e) {
+        this.setCmpState(STATE.SELECTED);
+    }
+
+    @action
+    setCmpState = cmpState => {
+        this.cmpState = cmpState;
+    }
+
 
     render() {
-      let {editable} = this.state;
+        let cmpState = this.cmpState;
+        // let { data } = this.props;
 
-      return (
-          <ArcherRnd {...this.props} editable={editable}>
-            <div className='archer-shape' onDoubleClick={this.onDbClick} onBlur={this.onBlur}>
-              <ArcherTextarea {...this.props} editable={editable}/>
-            </div>
-          </ArcherRnd>
-      );
+        let handler = {
+            onMouseDown: this.onMouseDown.bind(this)
+        };
+
+        const style = {
+            // backgroundImage: `url(${data.img})`,
+        };
+
+        return (
+            <ArcherRnd {...this.props} cmpState={cmpState}>
+                <div
+                    ref={dom => { this.shapeDom = dom }}
+                    className="archer-shape"
+                    {...handler}
+                    style={style}>
+                </div>
+            </ArcherRnd>
+        );
     }
 }
 

@@ -71,7 +71,7 @@ class ArcherTextarea extends Component {
     textOP(text) {
         // 文字变更,组装op
         // let text = this.editor.value;
-        console.debug(text);
+        console.dev(text);
         let { data, path } = this.props;
         if (!text || text === data.text) {
             return;
@@ -82,7 +82,7 @@ class ArcherTextarea extends Component {
     }
 
     onGlobalMouseup = e => {
-        console.debug('global mouseup');
+        console.dev('global mouseup');
         const container = this.wrapper.parentNode;
         if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
             if (!isChildOf(e.target, container)) {
@@ -104,14 +104,14 @@ class ArcherTextarea extends Component {
     }
 
     onMouseDown(e) {
-        console.debug('textarea mousedown');
+        console.dev('textarea mousedown');
         if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
             e.stopPropagation();
         }
     }
 
     onMouseUp(e) {
-        console.debug('textarea mouseup');
+        console.dev('textarea mouseup');
         const cmpState = this.state.cmpState;
 
         if (cmpState === SLIDE_CMP_STATE.UNSELECTED) {

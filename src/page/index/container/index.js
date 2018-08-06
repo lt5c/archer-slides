@@ -9,6 +9,7 @@ import clonedeep from 'lodash.clonedeep';
 import ArcherTextarea from '../slide-components/archer-textarea';
 import ArcherImage from '../slide-components/archer-image';
 import ArcherTableWrapper from '../slide-components/archer-table/index.js';
+import ArcherShape from '../slide-components/archer-shape';
 
 import RevealPlayer from '../components/revealPlayer';
 import Slidebar from '../components/slidebar';
@@ -74,6 +75,8 @@ class Wrapper extends Component {
                     return <ArcherImage data={item} path={path} key={id} />;
                 case TYPE.TABLE:
                     return <ArcherTableWrapper data={item} path={path} key={id} id={id} op_source={this.op_source} />;
+                case TYPE.SHAPE:
+                    return <ArcherShape data={item} path={path} key={id} />;
                 default:
                     return null;
             }

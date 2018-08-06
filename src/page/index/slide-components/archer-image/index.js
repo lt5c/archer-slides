@@ -23,7 +23,7 @@ class ArcherImage extends Component {
     }
 
     onGlobalMouseup = e => {
-        console.debug('global mouseup');
+        console.dev('global mouseup');
         const container = this.imageDom.parentNode;
         const { cmpState } = this.state;
         if (cmpState === SLIDE_CMP_STATE.SELECTED && !isChildOf(e.target, container)) {

@@ -47,6 +47,18 @@ module.exports = {
                     //     [7, 8, 9],
                     // ]
                 }
+            },
+            sp0x83: {
+                type: 'sp',
+                subtype: 0,
+                position: {
+                    x: 400,
+                    y: 400,
+                },
+                size: {
+                    width: 200,
+                    height: 200,
+                }
             }
         }
     },
