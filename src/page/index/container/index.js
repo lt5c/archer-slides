@@ -38,10 +38,13 @@ class Wrapper extends Component {
         this.applyKeyframe = this.applyKeyframe.bind(this);
         this.sharedb = window.sharedb;
         this.op_source = false;
+        this.editorWrapper = null;
     }
 
     componentDidMount() {
         this.listenServerOP();
+        this.editorWrapper = (document.getElementsByClassName('editor-wrapper'))[0];
+        window.onresize = this.onResize.bind(this);
     }
 
     // 监听server op
@@ -88,11 +91,29 @@ class Wrapper extends Component {
         });
     }
 
+    onResize() {
+        const width = parseInt(this.editorWrapper.clientWidth);
+        const height = parseInt(this.editorWrapper.clientHeight);
+        let scale;
+        if (width < height) {
+            scale = width / 800;
+        } else {
+            scale = height / 500;
+        }
+        this.props.commonStore.resetEditorScale(scale);
+    }
+
     render() {
-        let mainStyle = {
+        const { commonStore, slidesStore } = this.props;
+
+        const mainStyle = {
             height: (window.innerHeight - 50) + 'px',
         };
-        const { commonStore, slidesStore } = this.props;
+
+        const editorScale = commonStore.editorScale;
+        const editorStyle = {
+            transform: `scale(${editorScale},${editorScale})`
+        }
 
         return (
             <div className="wrapper">
@@ -103,7 +124,7 @@ class Wrapper extends Component {
                     <div className="sidebar">
                         <Slidebar tabs={slidesStore.tabs} clickHandler={slidesStore.selectTab} />
                     </div>
-                    <div className="editor-wrapper">
+                    <div className="editor-wrapper" style={editorStyle}>
                         <div className="editor">
                             {this.renderSlide()}
                         </div>
