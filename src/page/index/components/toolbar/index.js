@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
-import { insertTab, insertTable, insertImage, insertTextarea } from 'page/common/db';
+import { insertTab, insertTable, insertImage, insertTextarea, insertShape } from 'page/common/db';
+import {
+    SHAPE_TRIANGLE_TYPE,
+    SHAPE_RECTANGLE_TYPE,
+    SHAPE_CIRCLE_TYPE
+} from 'page/common/constants';
 import Button from './button';
+
 // import './index.less';
 
 const toolList = [
@@ -45,6 +51,14 @@ const toolList = [
             insertImage(tabid);
         }
     },
+    {
+        key: 'insert-shape',
+        name: '插入图形',
+        callback: function() {
+            const { curSlideID: tabid } = this.props.slidesStore;
+            insertShape(tabid, SHAPE_CIRCLE_TYPE);
+        }
+    }
 ];
 
 class Toolbar extends Component {

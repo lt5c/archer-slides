@@ -1,5 +1,13 @@
 import React from 'react';
-import { SLIDE_CMP_TYPE as TYPE, DEFAULT_TABLE_DATA } from 'page/index/constants/constants';
+import {
+    ARCHER_TABLE_TYPE,
+    ARCHER_IMAGE_TYPE,
+    ARCHER_TEXTAREA_TYPE,
+    ARCHER_SHAPE_TYPE,
+} from 'page/common/constants';
+import {
+    DEFAULT_TABLE_DATA
+} from '../../constants/constants';
 
 const TemplateMap = {};
 const createStyle = (item) => {
@@ -10,14 +18,14 @@ const createStyle = (item) => {
     };
 };
 
-TemplateMap[TYPE.TEXTAREA] = (item) => {
+TemplateMap[ARCHER_TEXTAREA_TYPE] = (item) => {
     const style = createStyle(item);
     return (
         <h1 style={style}>{item.text}</h1>
     );
 };
 
-TemplateMap[TYPE.IMAGE] = (item) => {
+TemplateMap[ARCHER_IMAGE_TYPE] = (item) => {
     const style = createStyle(item);
     return (
         <img
@@ -29,7 +37,7 @@ TemplateMap[TYPE.IMAGE] = (item) => {
     );
 };
 
-TemplateMap[TYPE.TABLE] = (item) => {
+TemplateMap[ARCHER_TABLE_TYPE] = (item) => {
     const data = item.settings.data || DEFAULT_TABLE_DATA;
     const style = createStyle(item);
     return (

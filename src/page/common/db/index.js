@@ -7,10 +7,12 @@ import {
     ARCHER_TABLE_TYPE,
     ARCHER_IMAGE_TYPE,
     ARCHER_TEXTAREA_TYPE,
+    ARCHER_SHAPE_TYPE,
     // action initContent
     ARCHER_TABLE_INIT_CONTENT,
     ARCHER_IMAGE_INIT_CONTENT,
     ARCHER_TEXTAREA_INIT_CONTENT,
+    getArcherShapeInitContent,
 } from '../constants/';
 
 import ArcherAction from './ArcherAction';
@@ -41,6 +43,11 @@ export const insertImage = (tabid) => {
 
 export const insertTextarea = (tabid) => {
     return insertSection(tabid, ARCHER_TEXTAREA_TYPE, ARCHER_TEXTAREA_INIT_CONTENT);
+};
+
+export const insertShape = (tabid, shapeType) => {
+    const content = getArcherShapeInitContent(shapeType);
+    return insertSection(tabid, ARCHER_SHAPE_TYPE, content);
 };
 
 const insertSection = (tabid, actionType, initContent) => {

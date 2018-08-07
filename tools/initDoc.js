@@ -50,15 +50,15 @@ module.exports = {
             },
             sp0x83: {
                 type: 'sp',
-                subtype: 0,
+                subtype: 'rectangle',
                 position: {
-                    x: 400,
-                    y: 400,
+                    x: 0,
+                    y: 0,
                 },
                 size: {
                     width: 200,
                     height: 200,
-                }
+                },
             }
         }
     },

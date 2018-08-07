@@ -6,12 +6,6 @@ export const SLIDE_CMP_STATE = {
     EDITING: 2
 };
 
-export const SLIDE_CMP_TYPE = {
-    TEXTAREA: 't',
-    IMAGE: 'i',
-    TABLE: 'tb',
-};
-
 export const DEFAULT_TABLE_SETTINGS = {
     contextMenu: true,
     startRows: 3,

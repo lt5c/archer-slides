@@ -15,7 +15,12 @@ import RevealPlayer from '../components/revealPlayer';
 import Slidebar from '../components/slidebar';
 import Toolbar from '../components/toolbar';
 
-import { SLIDE_CMP_TYPE as TYPE } from '../constants/constants';
+import {
+    ARCHER_TABLE_TYPE,
+    ARCHER_IMAGE_TYPE,
+    ARCHER_SHAPE_TYPE,
+    ARCHER_TEXTAREA_TYPE,
+} from 'page/common/constants';
 
 import './index.less';
 
@@ -69,13 +74,13 @@ class Wrapper extends Component {
             let item = slide[id];
             let path = dir.concat(id);
             switch (item.type) {
-                case TYPE.TEXTAREA:
+                case ARCHER_TEXTAREA_TYPE:
                     return <ArcherTextarea data={item} path={path} key={id} />;
-                case TYPE.IMAGE:
+                case ARCHER_IMAGE_TYPE:
                     return <ArcherImage data={item} path={path} key={id} />;
-                case TYPE.TABLE:
+                case ARCHER_TABLE_TYPE:
                     return <ArcherTableWrapper data={item} path={path} key={id} id={id} op_source={this.op_source} />;
-                case TYPE.SHAPE:
+                case ARCHER_SHAPE_TYPE:
                     return <ArcherShape data={item} path={path} key={id} />;
                 default:
                     return null;

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import ArcherRnd from '../archer-rnd';
-import { SLIDE_CMP_STATE as STATE } from 'page/index/constants/constants';
-import { isChildOf } from 'utils';
 import { observer } from 'mobx-react';
 import {
     observable,
     // computed,
     action
 } from 'mobx';
+import ArcherRnd from '../archer-rnd';
+import { SLIDE_CMP_STATE as STATE } from 'page/index/constants/constants';
+import { isChildOf } from 'utils';
+import { shapeStyle } from './style';
 
 import './index.less';
 
@@ -54,15 +55,14 @@ class ArcherShape extends Component {
 
     render() {
         let cmpState = this.cmpState;
-        // let { data } = this.props;
+        let { data } = this.props;
 
         let handler = {
             onMouseDown: this.onMouseDown.bind(this)
         };
 
-        const style = {
-            // backgroundImage: `url(${data.img})`,
-        };
+        const { subtype, size: { width, height }} = data;
+        const style = shapeStyle(subtype, width, height);
 
         return (
             <ArcherRnd {...this.props} cmpState={cmpState}>

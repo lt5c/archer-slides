@@ -1,10 +1,13 @@
 export const TAB_PATH = 'tabs';
 export const SLIDES_CONTENT_PATH = 'slides';
 
+// Archer Section Type
 export const ARCHER_TABLE_TYPE = 'tb';
 export const ARCHER_IMAGE_TYPE = 'i';
 export const ARCHER_TEXTAREA_TYPE = 't';
+export const ARCHER_SHAPE_TYPE = 'sp';
 
+// Archer Section init content
 export const ARCHER_TABLE_INIT_CONTENT = {
     type: ARCHER_TABLE_TYPE,
     position: {
@@ -47,3 +50,23 @@ export const ARCHER_TEXTAREA_INIT_CONTENT = {
         verticalAlign: 'middle',
     }
 };
+
+export const getArcherShapeInitContent = (shapeType) => {
+    return {
+        type: ARCHER_SHAPE_TYPE,
+        position: {
+            x: 50,
+            y: 50,
+        },
+        size: {
+            width: 200,
+            height: 200
+        },
+        subtype: shapeType || SHAPE_RECTANGLE_TYPE,
+    };
+};
+
+// ArcherShape subtype
+export const SHAPE_RECTANGLE_TYPE = 'rectangle';
+export const SHAPE_TRIANGLE_TYPE = 'triangle';
+export const SHAPE_CIRCLE_TYPE = 'circle';
