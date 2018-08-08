@@ -41,10 +41,10 @@ class ArcherTableWrapper extends Component {
     render() {
         let { cmpState } = this.state;
 
-        const className = `archer-table-wrapper ${cmpState === SLIDE_CMP_STATE.SELECTED ? 'selected' : 'unselected'}`
+        const className = `archer-table-wrapper ${cmpState === SLIDE_CMP_STATE.SELECTED ? 'selected' : 'unselected'}`;
 
         return (
-            <ArcherRnd {...this.props} cmpState={cmpState} disableResizing={true} className={className} >
+            <ArcherRnd {...this.props} cmpState={cmpState} className={className} >
                 <div ref={dom => { this.ref = dom }} >
                     <ArcherTable {...this.props} />
                 </div>

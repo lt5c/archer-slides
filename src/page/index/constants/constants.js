@@ -8,8 +8,8 @@ export const SLIDE_CMP_STATE = {
 
 export const DEFAULT_TABLE_SETTINGS = {
     contextMenu: true,
-    startRows: 3,
-    startCols: 3,
+    // startRows: 3,
+    // startCols: 3,
 };
 
 export const DEFAULT_TABLE_DATA = [

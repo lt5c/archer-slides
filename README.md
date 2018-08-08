@@ -1,11 +1,13 @@
 # To-Do
 - [x] Textarea
 - [x] Image
-- [ ] Shape
+- [x] Shape
 - [x] Table
 - [x] 侧边栏
 - [ ] 顶部栏
 - [x] 预览
+- [x] 自适应布局
+
 
 # 数据协同
 * 原理是OT算法, 实践是json0框架

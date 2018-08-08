@@ -4,7 +4,7 @@ import Handsontable from 'handsontable'
 import { DEFAULT_TABLE_SETTINGS } from 'page/index/constants/constants';
 import assign from 'lodash.assign';
 // import { ArcherAction } from 'page/common/db'
-import { onDataChange, onRowsChange, onColsChange } from './listener';
+import { registerHotListener } from './listener';
 
 import 'handsontable/dist/handsontable.full.css';
 
@@ -28,8 +28,14 @@ class ArcherTable extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         // 真正更正表格的地方
         // op_source: true from server, false frmo local
-        if (!this.state.shouldUpdate && !nextProps.op_source) {
-            this.hot.updateSettings(nextProps.data.settings);
+        const fromServer = !nextProps.op_source;
+        console.dev('table render', fromServer);
+        if (!this.state.shouldUpdate) {
+            const serverSettings = fromServer ? nextProps.data.settings : {};
+            const sizeSettings = this.recalculate(nextProps.data);
+            const localSettings = assign(serverSettings, sizeSettings);
+
+            this.hot.updateSettings(localSettings);
         }
 
         return this.state.shouldUpdate;
@@ -42,14 +48,31 @@ class ArcherTable extends Component {
          * 所以把表格渲染延迟到componentDidUpdate
          */
 
+        const { settings: serverSettings } = this.props.data;
+        const sizeSettings = this.recalculate(this.props.data);
+        const localSettings = assign(DEFAULT_TABLE_SETTINGS, serverSettings, sizeSettings);
         const container = this.table;
-        const settings = assign(DEFAULT_TABLE_SETTINGS, this.props.data.settings);
-        window.hot = this.hot = new Handsontable(container, settings);
-        this.hot.addHook('afterChange', onDataChange.bind(this));
-        this.hot.addHook('afterCreateRow', onRowsChange.bind(this));
-        this.hot.addHook('afterRemoveRow', onRowsChange.bind(this));
-        this.hot.addHook('afterCreateCol', onColsChange.bind(this));
-        this.hot.addHook('afterRemoveCol', onColsChange.bind(this));
+        this.hot = new Handsontable(container, localSettings);
+        registerHotListener.bind(this)();
+    }
+
+    /**
+     * recalculate rowHeights and colWidths by size
+     * @return {object} settings
+     */
+    recalculate(tableData) {
+        const { size: { width, height }, settings } = tableData;
+        const data = settings.data;
+
+        const rowCount = (data.length || 1);
+        const rowHeights = height / rowCount;
+        console.dev('rowHeights', rowHeights);
+
+        const colCount = (data[0] && data[0].length || 1);
+        const colWidths = width / colCount;
+        console.dev('colWidths', colWidths);
+
+        return { rowHeights, colWidths };
     }
 
     render() {
