@@ -16,6 +16,10 @@
 # PPT播放
 通过reveal.js实现,具体实现在RevealPlayer
 
+# Editor布局原理
+* 按照16:10布局，固定width 800px, height 500px
+* 根据页面实际大小，借助css的scale属性，把editor等比缩放
+
 # steamer-react
 react 高效快速启动脚手架
 

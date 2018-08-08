@@ -38,13 +38,16 @@ class Wrapper extends Component {
         this.applyKeyframe = this.applyKeyframe.bind(this);
         this.sharedb = window.sharedb;
         this.op_source = false;
-        this.editorWrapper = null;
     }
 
     componentDidMount() {
         this.listenServerOP();
-        this.editorWrapper = (document.getElementsByClassName('editor-wrapper'))[0];
+        this.onResize();
         window.onresize = this.onResize.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.dev('shouldUpdate');
     }
 
     // 监听server op
@@ -92,15 +95,9 @@ class Wrapper extends Component {
     }
 
     onResize() {
-        const width = parseInt(this.editorWrapper.clientWidth);
-        const height = parseInt(this.editorWrapper.clientHeight);
-        let scale;
-        if (width < height) {
-            scale = width / 800;
-        } else {
-            scale = height / 500;
-        }
-        this.props.commonStore.resetEditorScale(scale);
+        const width = window.innerWidth - 200;
+        const height = window.innerHeight - 50;
+        this.props.commonStore.resizeEditor(width, height);
     }
 
     render() {
@@ -110,10 +107,11 @@ class Wrapper extends Component {
             height: (window.innerHeight - 50) + 'px',
         };
 
-        const editorScale = commonStore.editorScale;
+        const scale = commonStore.editorScale;
         const editorStyle = {
-            transform: `scale(${editorScale},${editorScale})`
-        }
+            transform: `scale(${scale},${scale})`,
+            margin: commonStore.editorMargin,
+        };
 
         return (
             <div className="wrapper">
@@ -124,8 +122,8 @@ class Wrapper extends Component {
                     <div className="sidebar">
                         <Slidebar tabs={slidesStore.tabs} clickHandler={slidesStore.selectTab} />
                     </div>
-                    <div className="editor-wrapper" style={editorStyle}>
-                        <div className="editor">
+                    <div className="editor-wrapper">
+                        <div className="editor" style={editorStyle}>
                             {this.renderSlide()}
                         </div>
                     </div>
