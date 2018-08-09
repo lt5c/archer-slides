@@ -34,7 +34,7 @@ class ArcherTable extends Component {
             const serverSettings = fromServer ? nextProps.data.settings : null;
             const sizeSettings = sizeChange ? this.recalculate(nextProps.data) : null;
             if (serverSettings || sizeSettings) {
-                const localSettings = assign(serverSettings, sizeSettings);
+                const localSettings = assign({}, serverSettings, sizeSettings);
                 this.hot.updateSettings(localSettings);
             }
         }
@@ -51,7 +51,7 @@ class ArcherTable extends Component {
 
         const { settings: serverSettings } = this.props.data;
         const sizeSettings = this.recalculate(this.props.data);
-        const localSettings = assign(DEFAULT_TABLE_SETTINGS, serverSettings, sizeSettings);
+        const localSettings = assign({}, DEFAULT_TABLE_SETTINGS, serverSettings, sizeSettings);
         const container = this.table;
         this.hot = new Handsontable(container, localSettings);
         registerHotListener.bind(this)();

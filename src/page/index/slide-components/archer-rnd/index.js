@@ -5,6 +5,8 @@ import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
 
 /**
  * @prop {object} data 子组件数据
+ * @prop {object} disableResizingX 禁止resize X
+ * @prop {object} disableResizingY 禁止resize Y
  */
 class ArcherRnd extends Component {
     constructor(props, context) {
@@ -71,24 +73,24 @@ class ArcherRnd extends Component {
 
     render() {
         let { resizing } = this.state;
-        let { data, cmpState, disableResizing, className } = this.props;
+        let { data, cmpState, className, disableResizingX, disableResizingY } = this.props;
 
         // 生成拖拽框的配置
         const dragable = cmpState !== SLIDE_CMP_STATE.UNSELECTED;
-        const resizable = !disableResizing && cmpState !== SLIDE_CMP_STATE.UNSELECTED;
+        const resizable = cmpState !== SLIDE_CMP_STATE.UNSELECTED;
         const size = '10px';
         let rndConfig = {
             bound: 'parent',
             disableDragging: !dragable,
             enableResizing: {
-                bottom: resizable,
-                bottomLeft: resizable,
-                bottomRight: resizable,
-                left: resizable,
-                right: resizable,
-                top: resizable,
-                topLeft: resizable,
-                topRight: resizable,
+                bottom: resizable && !disableResizingY,
+                bottomLeft: resizable && !disableResizingX && !disableResizingY,
+                bottomRight: resizable && !disableResizingX && !disableResizingY,
+                left: resizable && !disableResizingX,
+                right: resizable && !disableResizingX,
+                top: resizable && !disableResizingY,
+                topLeft: resizable && !disableResizingX && !disableResizingY,
+                topRight: resizable && !disableResizingX && !disableResizingY,
             },
             resizeHandleStyles: {
                 bottom: {
@@ -161,7 +163,10 @@ class ArcherRnd extends Component {
         //  生成拖拽框的style
         let rndStyle = resizing ? {} : {
             position: data.position,
-            size: data.size
+            size: {
+                width: disableResizingX ? '' : data.size.width,
+                height: disableResizingY ? '' : data.size.height
+            }
         };
 
         let rndHandler = {

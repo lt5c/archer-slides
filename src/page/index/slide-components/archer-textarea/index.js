@@ -2,11 +2,20 @@
 // TODO:把textarea换成draft-js
 
 import React, { Component } from 'react';
+import {
+    observable,
+    // computed,
+    action
+} from 'mobx';
+import {
+    observer
+} from 'mobx-react';
 import ArcherRnd from '../archer-rnd';
 import clonedeep from 'lodash.clonedeep';
 import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
 import ArcherAction from 'page/common/db/ArcherAction';
 import { isChildOf, throttle } from 'utils';
+import assign from 'lodash.assign';
 
 import './index.less';
 
@@ -29,6 +38,7 @@ import './index.less';
        }
    }
  */
+@observer
 class ArcherTextarea extends Component {
     constructor(props, context) {
         super(props, context);
@@ -68,6 +78,11 @@ class ArcherTextarea extends Component {
         window.removeEventListener('mouseup', this.onGlobalMouseup);
     }
 
+    @observable textareaHeight = null;
+    @action resetTextareaHeight = height => {
+        this.textareaHeight = height;
+    }
+
     textOP(text) {
         // 文字变更,组装op
         // let text = this.editor.value;
@@ -77,7 +92,7 @@ class ArcherTextarea extends Component {
             return;
         }
         const subPath = path.concat('text');
-        const action = ArcherAction.getObjectChangeAction(subPath, clonedeep(text), data.text);
+        const action = ArcherAction.getObjectChangeAction(subPath, data.text, clonedeep(text));
         ArcherAction.submit(action);
     }
 
@@ -122,7 +137,12 @@ class ArcherTextarea extends Component {
     }
 
     onKeyUp(e) {
-        this.throttle(this.textOP.bind(this));
+        // this.throttle(this.textOP.bind(this));
+
+        // 高度自适应
+        // this.resetTextareaHeight(this.editor.scrollHeight);
+        this.editor.style.height = 'auto';
+        this.editor.style.height = `${this.editor.scrollHeight}px`;
     }
 
     onChange(e) {
@@ -140,10 +160,12 @@ class ArcherTextarea extends Component {
         const textareaHandler = {
             onMouseDown: this.onMouseDown.bind(this),
             onMouseUp: this.onMouseUp.bind(this),
-            // onKeyUp: this.onKeyUp.bind(this),
+            onKeyUp: this.onKeyUp.bind(this),
             // onChange: this.onChange.bind(this),
             onBlur: this.onBlur.bind(this),
         };
+
+        const style = assign({}, data.style);
 
         const editorValue = cmpState === SLIDE_CMP_STATE.EDITING ?
             { defaultValue: data.text }
@@ -153,7 +175,7 @@ class ArcherTextarea extends Component {
         const editable = cmpState !== SLIDE_CMP_STATE.UNSELECTED;
 
         return (
-            <ArcherRnd {...this.props} cmpState={cmpState} >
+            <ArcherRnd {...this.props} cmpState={cmpState} disableResizingY={true}>
                 <div ref={this.getWrapper} className={`archer-textarea-wrapper ${editable ? 'edit' : ''}`}>
                     <textarea
                         ref={this.getEditor}
@@ -161,7 +183,8 @@ class ArcherTextarea extends Component {
                         readOnly={!editable}
                         {...editorValue}
                         {...textareaHandler}
-                        style={data.style}
+                        style={style}
+                        rows="1"
                     />
                 </div>
             </ArcherRnd>
