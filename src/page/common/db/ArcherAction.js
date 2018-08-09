@@ -50,6 +50,13 @@ const ArcherAction = {
         }];
         return action;
     },
+    getNumberIncreaseAction: (path, number) => {
+        const action = [{
+            p: path,
+            na: number,
+        }];
+        return action;
+    },
     submit: (action) => {
         submitOP(action);
     },

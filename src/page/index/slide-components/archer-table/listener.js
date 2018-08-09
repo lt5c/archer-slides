@@ -2,10 +2,10 @@ import ArcherAction from 'page/common/db/ArcherAction';
 
 export const registerHotListener = function() {
     this.hot.addHook('afterChange', onDataChange.bind(this));
-    this.hot.addHook('afterCreateRow', onRowsChange.bind(this));
-    this.hot.addHook('afterRemoveRow', onRowsChange.bind(this));
-    this.hot.addHook('afterCreateCol', onColsChange.bind(this));
-    this.hot.addHook('afterRemoveCol', onColsChange.bind(this));
+    this.hot.addHook('afterCreateRow', onCreateRow.bind(this));
+    this.hot.addHook('afterRemoveRow', onRemoveRow.bind(this));
+    this.hot.addHook('afterCreateCol', onCreateCol.bind(this));
+    this.hot.addHook('afterRemoveCol', onRemoveCol.bind(this));
 };
 
 const getDataChangeAction = function() {
@@ -28,16 +28,36 @@ const onDataChange = function(changes, source) {
     ArcherAction.submit(action);
 };
 
-const onRowsChange = function(index, amount, source) {
-    console.dev('rowchange soruce', source);
+const onRowsAndColsChange = function(amount, isRow, isCreate) {
+    // data action
+    const action1 = getDataChangeAction.bind(this)();
+    // size action
+    const hotSettings = this.hot.getSettings();
+    const size = isRow ? hotSettings.rowHeights : hotSettings.colWidths;
+    const sumsize = amount * size * (isCreate ? 1 : -1);
+    console.dev('sumsize', sumsize);
+    const path = this.props.path.concat('size', isRow ? 'height' : 'width');
+    const action2 = ArcherAction.getNumberIncreaseAction(path, sumsize);
 
-    const action = getDataChangeAction.bind(this)();
-    ArcherAction.submit(action);
+    ArcherAction.packageSubmit(action1, action2);
 };
 
-const onColsChange = function(index, amount, source) {
-    console.dev('colchange soruce', source);
+const onCreateRow = function(index, amount, source) {
+    console.dev('createRow soruce', source);
+    onRowsAndColsChange.bind(this)(amount, true, true);
+};
 
-    const action = getDataChangeAction.bind(this)();
-    ArcherAction.submit(action);
+const onRemoveRow = function(index, amount, source) {
+    console.dev('removeRow soruce', source);
+    onRowsAndColsChange.bind(this)(amount, true, false);
+};
+
+const onCreateCol = function(index, amount, source) {
+    console.dev('createCol soruce', source);
+    onRowsAndColsChange.bind(this)(amount, false, true);
+};
+
+const onRemoveCol = function(index, amount, source) {
+    console.dev('removeCol soruce', source);
+    onRowsAndColsChange.bind(this)(amount, false, false);
 };

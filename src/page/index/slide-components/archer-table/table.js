@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ArcherRnd from '../archer-rnd';
-import Handsontable from 'handsontable'
+import Handsontable from 'handsontable';
 import { DEFAULT_TABLE_SETTINGS } from 'page/index/constants/constants';
 import assign from 'lodash.assign';
 // import { ArcherAction } from 'page/common/db'
@@ -29,13 +28,15 @@ class ArcherTable extends Component {
         // 真正更正表格的地方
         // op_source: true from server, false frmo local
         const fromServer = !nextProps.op_source;
+        const sizeChange = this.isSizeChange(this.props.data.size, nextProps.data.size);
         console.dev('table render', fromServer);
         if (!this.state.shouldUpdate) {
-            const serverSettings = fromServer ? nextProps.data.settings : {};
-            const sizeSettings = this.recalculate(nextProps.data);
-            const localSettings = assign(serverSettings, sizeSettings);
-
-            this.hot.updateSettings(localSettings);
+            const serverSettings = fromServer ? nextProps.data.settings : null;
+            const sizeSettings = sizeChange ? this.recalculate(nextProps.data) : null;
+            if (serverSettings || sizeSettings) {
+                const localSettings = assign(serverSettings, sizeSettings);
+                this.hot.updateSettings(localSettings);
+            }
         }
 
         return this.state.shouldUpdate;
@@ -73,6 +74,10 @@ class ArcherTable extends Component {
         console.dev('colWidths', colWidths);
 
         return { rowHeights, colWidths };
+    }
+
+    isSizeChange(size1, size2) {
+        return !(size1.width === size2.width && size1.height === size2.height);
     }
 
     render() {

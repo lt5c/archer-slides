@@ -15,10 +15,15 @@ export const ARCHER_TABLE_INIT_CONTENT = {
         y: 50
     },
     size: {
-
+        width: 200,
+        height: 200,
     },
     settings: {
-
+        data: [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null],
+        ],
     },
 };
 export const ARCHER_IMAGE_INIT_CONTENT = {
