@@ -24,9 +24,9 @@ const triangleStyle = (width, height) => {
     return {
         width: 0,
         height: 0,
-        borderBottom: `${height}px solid green`,
-        borderLeft: `${width / 2}px solid`,
-        borderRight: `${width / 2}px solid`,
+        borderBottom: `${height}px solid rgba(91,155,213,1)`,
+        borderLeft: `${width / 2}px solid rgba(0,0,0,0)`,
+        borderRight: `${width / 2}px solid rgba(0,0,0,0)`,
     };
 };
 
@@ -34,7 +34,7 @@ const rectangleStyle = () => {
     return {
         width: '100%',
         height: '100%',
-        background: 'green'
+        background: 'rgba(91,155,213,1)',
     };
 };
 
@@ -42,7 +42,7 @@ const circleStyle = () => {
     return {
         width: '100%',
         height: '100%',
-        background: 'green',
+        background: 'rgba(91,155,213,1)',
         borderRadius: '50%',
-    }
-}
+    };
+};

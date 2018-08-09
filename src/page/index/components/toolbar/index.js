@@ -53,12 +53,29 @@ const toolList = [
     },
     {
         key: 'insert-shape',
-        name: '插入图形',
+        name: '插入距形',
+        callback: function() {
+            const { curSlideID: tabid } = this.props.slidesStore;
+            insertShape(tabid, SHAPE_RECTANGLE_TYPE);
+        }
+    },
+    {
+        key: 'insert-shape',
+        name: '插入三角形',
+        callback: function() {
+            const { curSlideID: tabid } = this.props.slidesStore;
+            insertShape(tabid, SHAPE_TRIANGLE_TYPE);
+        }
+    },
+    {
+        key: 'insert-shape',
+        name: '插入圆形',
         callback: function() {
             const { curSlideID: tabid } = this.props.slidesStore;
             insertShape(tabid, SHAPE_CIRCLE_TYPE);
         }
-    }
+    },
+
 ];
 
 class Toolbar extends Component {
