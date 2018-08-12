@@ -58,17 +58,29 @@ class ArcherRnd extends Component {
     }
 
     onResizeStart() {
+        const { onResizeStart } = this.props;
+        if (onResizeStart) {
+            onResizeStart();
+        }
+
         this.setState({
             resizing: true
         });
+        console.dev('onResizeStart');
     }
 
     onResizeStop(e, dir, ref, delta, position) {
+        const { onResizeStop } = this.props;
+        if (onResizeStop) {
+            onResizeStop();
+        }
+
         this.setState({
             resizing: false
         });
 
         this.sizeOP(delta, position);
+        console.dev('onResizeStop');
     }
 
     render() {

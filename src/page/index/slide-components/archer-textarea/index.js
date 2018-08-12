@@ -44,6 +44,7 @@ class ArcherTextarea extends Component {
         this.editor = null;
         this.getWrapper = e => {
             this.wrapper = e;
+            // this.wrapper && this.wrapper.addEventListener('mousedown', this.onGlobalMousedown);
         };
         this.getEditor = e => {
             this.editor = e;
@@ -51,10 +52,11 @@ class ArcherTextarea extends Component {
         };
 
         this.throttle = throttle(300); // 300ms的节流函数
+        this.keydown = false;
     }
 
     componentDidMount() {
-        window.addEventListener('mousedown', this.onGlobalMouseup);
+        window.addEventListener('mouseup', this.onGlobalMouseup);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -70,7 +72,8 @@ class ArcherTextarea extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('mousedown', this.onGlobalMouseup);
+        window.removeEventListener('mouseup', this.onGlobalMouseup);
+        // this.wrapper.removeEventListener('mousedown', this.onGlobalMousedown);
         this.autoResize.unObserve();
     }
 
@@ -99,11 +102,15 @@ class ArcherTextarea extends Component {
         }, true);
     }
 
+    onContainerMousedown = e => {
+        this.keydown = true;
+    }
+
     onGlobalMouseup = e => {
         console.dev('global mouseup');
         const container = this.wrapper.parentNode;
         if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
-            if (!isChildOf(e.target, container)) {
+            if (!isChildOf(e.target, container) && !this.keydown) {
                 this.setState({
                     cmpState: SLIDE_CMP_STATE.UNSELECTED
                 });
@@ -113,12 +120,13 @@ class ArcherTextarea extends Component {
                 });
             }
         } else if (this.state.cmpState === SLIDE_CMP_STATE.SELECTED) {
-            if (!isChildOf(e.target, container)) {
+            if (!isChildOf(e.target, container) && !this.keydown) {
                 this.setState({
                     cmpState: SLIDE_CMP_STATE.UNSELECTED
                 });
             }
         }
+        this.keydown = false;
     }
 
     onMouseDown(e) {
@@ -126,6 +134,7 @@ class ArcherTextarea extends Component {
         // if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
         //     e.stopPropagation();
         // }
+        // this.keydown = true;
         e.stopPropagation();
     }
 
@@ -174,7 +183,12 @@ class ArcherTextarea extends Component {
         const editable = cmpState !== SLIDE_CMP_STATE.UNSELECTED;
 
         return (
-            <ArcherRnd {...this.props} cmpState={cmpState} disableResizingY={true}>
+            <ArcherRnd
+                {...this.props}
+                cmpState={cmpState}
+                disableResizingY={true}
+                onResizeStart={this.onContainerMousedown}
+            >
                 <div ref={this.getWrapper} className={`archer-textarea-wrapper ${editable ? 'edit' : ''}`}>
                     <textarea
                         ref={this.getEditor}
