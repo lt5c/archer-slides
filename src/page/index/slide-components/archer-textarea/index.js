@@ -2,20 +2,13 @@
 // TODO:把textarea换成draft-js
 
 import React, { Component } from 'react';
-import {
-    observable,
-    // computed,
-    action
-} from 'mobx';
-import {
-    observer
-} from 'mobx-react';
 import ArcherRnd from '../archer-rnd';
 import clonedeep from 'lodash.clonedeep';
 import { SLIDE_CMP_STATE } from 'page/index/constants/constants';
 import ArcherAction from 'page/common/db/ArcherAction';
 import { isChildOf, throttle } from 'utils';
 import assign from 'lodash.assign';
+import autoResize from './autoResize';
 
 import './index.less';
 
@@ -38,7 +31,6 @@ import './index.less';
        }
    }
  */
-@observer
 class ArcherTextarea extends Component {
     constructor(props, context) {
         super(props, context);
@@ -46,6 +38,7 @@ class ArcherTextarea extends Component {
             cmpState: SLIDE_CMP_STATE.UNSELECTED,  // 组件三态: 浏览态、选中态、编辑态
         };
 
+        this.autoResize = autoResize();
         // 只读属性
         this.wrapper = null;
         this.editor = null;
@@ -54,13 +47,14 @@ class ArcherTextarea extends Component {
         };
         this.getEditor = e => {
             this.editor = e;
+            this.resize();
         };
 
         this.throttle = throttle(300); // 300ms的节流函数
     }
 
     componentDidMount() {
-        window.addEventListener('mouseup', this.onGlobalMouseup);
+        window.addEventListener('mousedown', this.onGlobalMouseup);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -72,15 +66,12 @@ class ArcherTextarea extends Component {
         //         editorValue: this.props.data.text
         //     });
         // }
+        this.resize();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('mouseup', this.onGlobalMouseup);
-    }
-
-    @observable textareaHeight = null;
-    @action resetTextareaHeight = height => {
-        this.textareaHeight = height;
+        window.removeEventListener('mousedown', this.onGlobalMouseup);
+        this.autoResize.unObserve();
     }
 
     textOP(text) {
@@ -94,6 +85,18 @@ class ArcherTextarea extends Component {
         const subPath = path.concat('text');
         const action = ArcherAction.getObjectChangeAction(subPath, data.text, clonedeep(text));
         ArcherAction.submit(action);
+    }
+
+    resize() {
+        let { width } = this.props.data.size;
+        width -= 2; // border width
+        width -= 10; // padding width
+        this.editor && this.autoResize.init(this.editor, {
+            maxWidth: width,
+            minWidth: width,
+            maxHeight: 100000,
+            minHeight: 1,
+        }, true);
     }
 
     onGlobalMouseup = e => {
@@ -119,34 +122,30 @@ class ArcherTextarea extends Component {
     }
 
     onMouseDown(e) {
-        console.dev('textarea mousedown');
-        if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
-            e.stopPropagation();
-        }
+        // console.dev('textarea mousedown');
+        // if (this.state.cmpState === SLIDE_CMP_STATE.EDITING) {
+        //     e.stopPropagation();
+        // }
+        e.stopPropagation();
     }
 
     onMouseUp(e) {
         console.dev('textarea mouseup');
-        const cmpState = this.state.cmpState;
+        // const cmpState = this.state.cmpState;
 
-        if (cmpState === SLIDE_CMP_STATE.UNSELECTED) {
-            this.setState({
-                cmpState: SLIDE_CMP_STATE.EDITING
-            });
-        }
+        // if (cmpState === SLIDE_CMP_STATE.UNSELECTED) {
+        this.setState({
+            cmpState: SLIDE_CMP_STATE.EDITING
+        });
+        // }
     }
 
     onKeyUp(e) {
         // this.throttle(this.textOP.bind(this));
 
         // 高度自适应
-        // this.resetTextareaHeight(this.editor.scrollHeight);
-        this.editor.style.height = 'auto';
-        this.editor.style.height = `${this.editor.scrollHeight}px`;
-    }
-
-    onChange(e) {
-        this.textOP(e.target.value);
+        // this.editor.style.height = 'auto';
+        // this.editor.style.height = `${this.editor.scrollHeight}px`;
     }
 
     onBlur(e) {
@@ -160,7 +159,7 @@ class ArcherTextarea extends Component {
         const textareaHandler = {
             onMouseDown: this.onMouseDown.bind(this),
             onMouseUp: this.onMouseUp.bind(this),
-            onKeyUp: this.onKeyUp.bind(this),
+            // onKeyUp: this.onKeyUp.bind(this),
             // onChange: this.onChange.bind(this),
             onBlur: this.onBlur.bind(this),
         };

@@ -164,8 +164,8 @@ class ArcherRnd extends Component {
         let rndStyle = resizing ? {} : {
             position: data.position,
             size: {
-                width: disableResizingX ? '' : data.size.width,
-                height: disableResizingY ? '' : data.size.height
+                width: disableResizingX ? undefined : data.size.width,
+                height: disableResizingY ? undefined : data.size.height
             }
         };
 
@@ -174,7 +174,7 @@ class ArcherRnd extends Component {
             onResizeStart: this.onResizeStart,
             onResizeStop: this.onResizeStop,
         };
-
+        console.dev('resizing', resizing);
         return (
             <Rnd {...rndConfig} {...rndStyle} {...rndHandler} className={className || ''} >
                 {this.props.children}
