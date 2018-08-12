@@ -13,7 +13,7 @@ module.exports = {
                 },
                 text: 'hello world',
                 style: {
-                    fontSize: '24',
+                    fontSize: '48',
                     textAlign: 'center',
                     verticalAlign: 'middle',
                 }

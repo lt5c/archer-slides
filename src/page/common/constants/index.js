@@ -45,12 +45,30 @@ export const ARCHER_TEXTAREA_INIT_CONTENT = {
         y: 50
     },
     size: {
-        width: 300,
-        height: 100,
+        width: 400,
+        // height: 100,
     },
-    text: 'hello world',
+    text: '正文',
     style: {
         fontSize: '24',
+        // textAlign: 'center',
+        // verticalAlign: 'middle',
+    }
+};
+
+export const ARCHER_TEXTAREA_INIT_CONTENT_2 = {
+    type: ARCHER_TEXTAREA_TYPE,
+    position: {
+        x: 50,
+        y: 50
+    },
+    size: {
+        width: 400,
+        // height: 100,
+    },
+    text: '标题',
+    style: {
+        fontSize: '48',
         textAlign: 'center',
         verticalAlign: 'middle',
     }

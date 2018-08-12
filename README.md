@@ -8,6 +8,8 @@
 - [x] 预览
 - [x] 自适应布局
 - [x] textarea自适应
+- [ ] undo redo 功能
+
 
 # 数据协同
 * 原理是OT算法, 实践是json0框架

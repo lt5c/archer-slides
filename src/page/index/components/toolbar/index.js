@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { insertTab, insertTable, insertImage, insertTextarea, insertShape } from 'page/common/db';
+import { insertTab, insertTable, insertImage, insertTextarea, insertTextarea2, insertShape } from 'page/common/db';
 import {
     SHAPE_TRIANGLE_TYPE,
     SHAPE_RECTANGLE_TYPE,
@@ -37,7 +37,15 @@ const toolList = [
     },
     {
         key: 'insert-textarea',
-        name: '插入文本',
+        name: '插入文本(标题)',
+        callback: function() {
+            const { curSlideID: tabid } = this.props.slidesStore;
+            insertTextarea2(tabid);
+        }
+    },
+    {
+        key: 'insert-textarea',
+        name: '插入文本(正文)',
         callback: function() {
             const { curSlideID: tabid } = this.props.slidesStore;
             insertTextarea(tabid);

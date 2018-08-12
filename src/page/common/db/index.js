@@ -12,6 +12,7 @@ import {
     ARCHER_TABLE_INIT_CONTENT,
     ARCHER_IMAGE_INIT_CONTENT,
     ARCHER_TEXTAREA_INIT_CONTENT,
+    ARCHER_TEXTAREA_INIT_CONTENT_2,
     getArcherShapeInitContent,
 } from '../constants/';
 
@@ -41,8 +42,14 @@ export const insertImage = (tabid) => {
     return insertSection(tabid, ARCHER_IMAGE_TYPE, ARCHER_IMAGE_INIT_CONTENT);
 };
 
+// 正文
 export const insertTextarea = (tabid) => {
     return insertSection(tabid, ARCHER_TEXTAREA_TYPE, ARCHER_TEXTAREA_INIT_CONTENT);
+};
+
+// 标题
+export const insertTextarea2 = (tabid) => {
+    return insertSection(tabid, ARCHER_TEXTAREA_TYPE, ARCHER_TEXTAREA_INIT_CONTENT_2);
 };
 
 export const insertShape = (tabid, shapeType) => {
