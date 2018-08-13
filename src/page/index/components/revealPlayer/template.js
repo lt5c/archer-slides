@@ -4,10 +4,13 @@ import {
     ARCHER_IMAGE_TYPE,
     ARCHER_TEXTAREA_TYPE,
     ARCHER_SHAPE_TYPE,
+    SHAPE_TRIANGLE_TYPE,
 } from 'page/common/constants';
 import {
     DEFAULT_TABLE_DATA
 } from '../../constants/constants';
+import assign from 'lodash.assign';
+import { shapeStyle } from '../../slide-components/archer-shape/style'
 
 const TemplateMap = {};
 const createStyle = (item) => {
@@ -21,7 +24,7 @@ const createStyle = (item) => {
 TemplateMap[ARCHER_TEXTAREA_TYPE] = (item) => {
     const style = createStyle(item);
     return (
-        <h1 style={style}>{item.text}</h1>
+        <p style={style}>{item.text}</p>
     );
 };
 
@@ -54,6 +57,18 @@ TemplateMap[ARCHER_TABLE_TYPE] = (item) => {
                 })}
             </tbody>
         </table>
+    );
+};
+
+TemplateMap[ARCHER_SHAPE_TYPE] = (item) => {
+    let style = createStyle(item);
+    assign(style, shapeStyle(item.subtype, item.size.width, item.size.height));
+    item.subtype !== SHAPE_TRIANGLE_TYPE && assign(style, item.size);
+
+    return (
+        <div
+            style={style}
+        />
     );
 };
 

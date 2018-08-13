@@ -34,8 +34,8 @@ export default class Slides {
     }
 
     @action.bound
-    selectTab = (tabId) => {
-        this.focusId = tabId;
+    selectTab = (tabid) => {
+        this.focusId = tabid;
     }
 
     getTabID = (index) => {
@@ -44,5 +44,9 @@ export default class Slides {
 
     getTabIndex = (tabid) => {
         return this.tabs.findIndex(tabid => tabid === this.focusId);
+    }
+
+    getSlideByTabID = (tabid) => {
+        return this.slides[tabid];
     }
 }

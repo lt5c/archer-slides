@@ -27,23 +27,24 @@ class RevealPlayer extends Component {
     }
 
     render() {
-        const { slides } = this.props;
-        // return (
-        //     showRevealRender ?
-        //         <iframe ref={dom => { this.iframeDom = dom }} className="reveal-render" src="http://localhost:8000" />
-        //         :
-        //         null
-        // );
+        const { slidesStore } = this.props;
+
         return (
             <div className="reveal-wrapper">
                 <div className="reveal">
                     <div className="slides">
-                        <section>
-                            {
-                                this.renderSection(slides)
-                            }
-                        </section>
-                        <section>Slide 2</section>
+                        {
+                            slidesStore.tabs.map(tabid => {
+                                const slide = slidesStore.getSlideByTabID(tabid);
+                                return (
+                                    <section key={tabid}>
+                                        {
+                                            this.renderSection(slide)
+                                        }
+                                    </section>
+                                );
+                            })
+                        }
                     </div>
                 </div>
             </div>

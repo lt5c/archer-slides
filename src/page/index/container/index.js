@@ -129,7 +129,7 @@ class Wrapper extends Component {
                     </div>
                 </div>
                 {commonStore.showRevealRender ?
-                    <RevealPlayer slides={slidesStore.curSlide} />
+                    <RevealPlayer {...this.props} />
                     :
                     null
                 }

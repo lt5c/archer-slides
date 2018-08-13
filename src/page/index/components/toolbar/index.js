@@ -1,4 +1,13 @@
 import React, { Component } from 'react';
+import {
+    inject,
+    observer
+} from 'mobx-react';
+import {
+    observable,
+    computed,
+    action
+} from 'mobx';
 import { insertTab, removeTab, insertTable, insertImage, insertTextarea, insertTextarea2, insertShape } from 'page/common/db';
 import {
     SHAPE_TRIANGLE_TYPE,
@@ -6,8 +15,10 @@ import {
     SHAPE_CIRCLE_TYPE
 } from 'page/common/constants';
 import Button from './button';
+import Portal from '../portal';
 
 // import './index.less';
+
 
 const toolList = [
     {
@@ -69,8 +80,9 @@ const toolList = [
         key: 'insert-image',
         name: '插入图片',
         callback: function() {
-            const { curSlideID: tabid } = this.props.slidesStore;
-            insertImage(tabid);
+            // const { curSlideID: tabid } = this.props.slidesStore;
+            // insertImage(tabid);
+            this.props.toolbarStore.triggerShowImagePortal();
         }
     },
     {
@@ -100,6 +112,8 @@ const toolList = [
 
 ];
 
+@inject('toolbarStore')
+@observer
 class Toolbar extends Component {
     constructor(props, context) {
         super(props, context);
@@ -107,17 +121,42 @@ class Toolbar extends Component {
         };
     }
 
+    onConfirmImage = (confirm) => {
+        const { slidesStore, toolbarStore } = this.props;
+        if (confirm) {
+            const url = this.refs.imgInput.value;
+            insertImage(slidesStore.curSlideID, url);
+        }
+        toolbarStore.triggerShowImagePortal();
+    }
 
     render() {
-        return (<div className={'toolbar-wrapper'}>
-            {
-                toolList.map(item => {
-                    return (
-                        <Button key={item.name} item={item} {...this.props} />
-                    );
-                })
-            }
-        </div>);
+        const { toolbarStore } = this.props;
+
+        return (
+            <div className={'toolbar-wrapper'}>
+                {
+                    toolList.map(item => {
+                        return (
+                            <Button key={item.name} item={item} {...this.props} />
+                        );
+                    })
+                }
+                {
+                    toolbarStore.showImagePortal ?
+                        <Portal>
+                            {'图片地址:'}
+                            <br />
+                            <input ref="imgInput" type="text" name="img_url" />
+                            <br />
+                            <input type="submit" value="提交" onClick={_ => this.onConfirmImage(true)} />
+                            <input type="submit" value="取消" onClick={_ => this.onConfirmImage(false)} />
+                        </Portal>
+                        :
+                        null
+                }
+            </div>
+        );
     }
 }
 

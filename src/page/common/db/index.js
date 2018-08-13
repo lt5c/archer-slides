@@ -52,8 +52,12 @@ export const insertTable = (tabid) => {
     return insertSection(tabid, ARCHER_TABLE_TYPE, ARCHER_TABLE_INIT_CONTENT);
 };
 
-export const insertImage = (tabid) => {
-    return insertSection(tabid, ARCHER_IMAGE_TYPE, ARCHER_IMAGE_INIT_CONTENT);
+export const insertImage = (tabid, url) => {
+    let content = clonedeep(ARCHER_IMAGE_INIT_CONTENT);
+    if (url && url.length > 0) {
+        content.img = url;
+    }
+    return insertSection(tabid, ARCHER_IMAGE_TYPE, content);
 };
 
 // 正文

@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import {
-    inject,
-    observer
-} from 'mobx-react';
+
 // import './index.less';
 
-@inject('slidesStore')
-
-@observer
 class Button extends Component {
     constructor(props, context) {
         super(props, context);
