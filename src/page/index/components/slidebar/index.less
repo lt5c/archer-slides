@@ -5,12 +5,14 @@
 .slidebar-content-wrapper {
     width: 100%;
     overflow-y: auto;
+    background-color: gray;
 
     .tab {
         margin: 20px auto 0 auto;
         width: @tabSize;
         height: @tabSize;
-        background-color: gray;
+        background-color: white;
+        border: 5px solid gray;
 
         div {
             font-size: 40px;
@@ -19,6 +21,11 @@
             text-align: center;
             line-height: @tabSize;
             // margin: auto auto;
+        }
+
+        &.focus {
+            // margin: 20px auto 0 auto;
+            border: 5px solid red;
         }
     }
 }
