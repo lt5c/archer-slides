@@ -34,6 +34,20 @@ export const insertTab = (index) => {
     return tabid;
 };
 
+export const removeTab = function(index, tabid) {
+    console.dev('insertTab', index, tabid);
+
+    // 添加slide内容
+    const content = {};
+    const path1 = [SLIDES_CONTENT_PATH, tabid];
+    const action1 = ArcherAction.getObjectRemoveAction(path1, content);
+    // 添加tabid
+    const path2 = [TAB_PATH];
+    const action2 = ArcherAction.getArrayRemoveAction(path2, index, tabid);
+
+    ArcherAction.packageSubmit(action1, action2);
+};
+
 export const insertTable = (tabid) => {
     return insertSection(tabid, ARCHER_TABLE_TYPE, ARCHER_TABLE_INIT_CONTENT);
 };

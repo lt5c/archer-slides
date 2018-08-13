@@ -17,7 +17,7 @@ export default class Slides {
         return this.focusId;
     }
     @computed get curSlideIndex() {
-        return this.tabs.findIndex(tabid => tabid === this.focusId);
+        return this.getTabIndex(this.focusId);
     }
 
     @computed get tabCount() {
@@ -38,5 +38,11 @@ export default class Slides {
         this.focusId = tabId;
     }
 
+    getTabID = (index) => {
+        return this.tabs[index];
+    }
 
+    getTabIndex = (tabid) => {
+        return this.tabs.findIndex(tabid => tabid === this.focusId);
+    }
 }

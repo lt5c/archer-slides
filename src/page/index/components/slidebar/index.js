@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import Reveal from 'libs/reveal/reveal';
+// import Reveal from 'libs/reveal/reveal';
+import {
+    inject,
+    observer
+} from 'mobx-react';
 
 import './index.less';
 
+@inject('slidesStore')
+
+@observer
 class Slidebar extends Component {
     constructor(props, context) {
         super(props, context);
@@ -10,21 +17,21 @@ class Slidebar extends Component {
         };
     }
 
-    renderTab(tabid, index) {
+    renderTab(tabid, index, focus) {
         const { clickHandler } = this.props;
         return (
-            <div key={tabid} className="tab" onClick={() => clickHandler(tabid)}>
-                <div>{index+1}</div>
+            <div key={tabid} className={`tab ${focus ? 'focus' : ''}`} onClick={() => clickHandler(tabid)}>
+                <div>{index + 1}</div>
             </div>
         );
     }
 
     render() {
-        const { tabs } = this.props;
+        const { slidesStore: { tabs, curSlideID }} = this.props;
 
         return (
             <div className="slidebar-content-wrapper">
-                {tabs.map((tabid, index) => this.renderTab(tabid, index))}
+                {tabs.map((tabid, index) => this.renderTab(tabid, index, tabid === curSlideID))}
             </div>
         );
     }

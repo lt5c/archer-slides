@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { insertTab, insertTable, insertImage, insertTextarea, insertTextarea2, insertShape } from 'page/common/db';
+import { insertTab, removeTab, insertTable, insertImage, insertTextarea, insertTextarea2, insertShape } from 'page/common/db';
 import {
     SHAPE_TRIANGLE_TYPE,
     SHAPE_RECTANGLE_TYPE,
@@ -25,6 +25,20 @@ const toolList = [
             const newid = insertTab(index);
             // 可能存在异步问题
             this.props.slidesStore.selectTab(newid);
+        }
+    },
+    {
+        key: 'remove-tab',
+        name: '删除当前幻灯片',
+        callback: function() {
+            const { slidesStore } = this.props;
+            const { curSlideIndex, curSlideID } = slidesStore;
+            const nextIndex = curSlideIndex === slidesStore.tabCount ? curSlideIndex - 1 : curSlideIndex + 1;
+            const nextTabId = slidesStore.getTabID(nextIndex);
+            // 先切好tab
+            slidesStore.selectTab(nextTabId);
+            // 再删除tab
+            removeTab(curSlideIndex, curSlideID);
         }
     },
     {
