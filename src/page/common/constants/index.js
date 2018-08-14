@@ -33,8 +33,8 @@ export const ARCHER_IMAGE_INIT_CONTENT = {
         y: 50
     },
     size: {
-        width: 100,
-        height: 100,
+        width: 200,
+        height: 200,
     },
     img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529576812899&di=1053f44867d04eb79767516d0ee2d99f&imgtype=0&src=http%3A%2F%2Fwww.windows7en.com%2Fuploads%2Fallimg%2F170516%2F1A9402V1-5.jpg',
 };
@@ -50,7 +50,7 @@ export const ARCHER_TEXTAREA_INIT_CONTENT = {
     },
     text: '正文',
     style: {
-        fontSize: '24',
+        fontSize: '40',
         // textAlign: 'center',
         // verticalAlign: 'middle',
     }
@@ -68,7 +68,7 @@ export const ARCHER_TEXTAREA_INIT_CONTENT_2 = {
     },
     text: '标题',
     style: {
-        fontSize: '48',
+        fontSize: '80',
         textAlign: 'center',
         verticalAlign: 'middle',
     }
