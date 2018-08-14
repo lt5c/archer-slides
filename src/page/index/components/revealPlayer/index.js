@@ -20,9 +20,10 @@ class RevealPlayer extends Component {
     }
 
     renderSection(slide) {
+        // console.dev(this.refs.slides.style.width);
         return Object.keys(slide).map(id => {
             const item = slide[id];
-            return renderTemplate(item);
+            return renderTemplate(item, scale);
         });
     }
 
@@ -32,7 +33,7 @@ class RevealPlayer extends Component {
         return (
             <div className="reveal-wrapper">
                 <div className="reveal">
-                    <div className="slides">
+                    <div refs='slides' className="slides">
                         {
                             slidesStore.tabs.map(tabid => {
                                 const slide = slidesStore.getSlideByTabID(tabid);

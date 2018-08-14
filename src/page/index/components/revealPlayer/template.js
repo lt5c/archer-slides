@@ -13,23 +13,23 @@ import assign from 'lodash.assign';
 import { shapeStyle } from '../../slide-components/archer-shape/style'
 
 const TemplateMap = {};
-const createStyle = (item) => {
+const createStyle = (item, scale) => {
     return {
         position: 'absolute',
-        top: item.position.y || 0,
-        left: item.position.x || 0,
+        top: item.position.y * scale || 0,
+        left: item.position.x * scale || 0,
     };
 };
 
-TemplateMap[ARCHER_TEXTAREA_TYPE] = (item) => {
-    const style = createStyle(item);
+TemplateMap[ARCHER_TEXTAREA_TYPE] = (item, scale) => {
+    const style = createStyle(item, scale);
     return (
         <p style={style}>{item.text}</p>
     );
 };
 
-TemplateMap[ARCHER_IMAGE_TYPE] = (item) => {
-    const style = createStyle(item);
+TemplateMap[ARCHER_IMAGE_TYPE] = (item, scale) => {
+    const style = createStyle(item, scale);
     return (
         <img
             style={style}
@@ -40,9 +40,9 @@ TemplateMap[ARCHER_IMAGE_TYPE] = (item) => {
     );
 };
 
-TemplateMap[ARCHER_TABLE_TYPE] = (item) => {
+TemplateMap[ARCHER_TABLE_TYPE] = (item, scale) => {
     const data = item.settings.data || DEFAULT_TABLE_DATA;
-    const style = createStyle(item);
+    const style = createStyle(item, scale);
     return (
         <table style={style}>
             <tbody>
@@ -60,8 +60,8 @@ TemplateMap[ARCHER_TABLE_TYPE] = (item) => {
     );
 };
 
-TemplateMap[ARCHER_SHAPE_TYPE] = (item) => {
-    let style = createStyle(item);
+TemplateMap[ARCHER_SHAPE_TYPE] = (item, scale) => {
+    let style = createStyle(item, scale);
     assign(style, shapeStyle(item.subtype, item.size.width, item.size.height));
     item.subtype !== SHAPE_TRIANGLE_TYPE && assign(style, item.size);
 
@@ -72,7 +72,7 @@ TemplateMap[ARCHER_SHAPE_TYPE] = (item) => {
     );
 };
 
-export const renderTemplate = (item) => {
+export const renderTemplate = (item, scale) => {
     const template = TemplateMap[item.type];
-    return template && template(item);
+    return template && template(item, scale || 1);
 };
