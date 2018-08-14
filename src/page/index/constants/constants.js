@@ -18,5 +18,5 @@ export const DEFAULT_TABLE_DATA = [
     [null, null, null],
 ];
 
-export const EDITOR_WRAPPER_WIDTH = 800;
-export const EDITOR_WRAPPER_HEIGHT = 600;
+export const EDITOR_WRAPPER_WIDTH = 960;
+export const EDITOR_WRAPPER_HEIGHT = 700;

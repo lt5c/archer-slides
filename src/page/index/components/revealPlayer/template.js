@@ -10,7 +10,7 @@ import {
     DEFAULT_TABLE_DATA
 } from '../../constants/constants';
 import assign from 'lodash.assign';
-import { shapeStyle } from '../../slide-components/archer-shape/style'
+import { shapeStyle } from '../../slide-components/archer-shape/style';
 
 const TemplateMap = {};
 const createStyle = (item, scale) => {
